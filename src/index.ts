@@ -12,10 +12,10 @@ export const allowedWallets = {
         'dev-wallet': InsecureWallet
 }
 
-const wallet_preference_key = 'wallet-preference'
-const acct_list_key = 'acct-list'
-const acct_preference_key = 'acct-preference'
-const mnemonic_key = 'mnemonic'
+const walletPreferenceKey = 'wallet-preference'
+const acctListKey = 'acct-list'
+const acctPreferenceKey = 'acct-preference'
+const mnemonicKey = 'mnemonic'
 
 export class SessionWallet {
         wallet: Wallet
@@ -33,7 +33,7 @@ export class SessionWallet {
 
                 this.wallet = new allowedWallets[this.wname](network)
                 this.wallet.accounts = this.accountList()
-                this.wallet.default_account = this.accountIndex()
+                this.wallet.defaultAccount = this.accountIndex()
         }
 
         async connect(): Promise<boolean> {
@@ -41,9 +41,9 @@ export class SessionWallet {
 
                 switch (this.wname) {
                         case 'insecure-wallet':
-                                const stored_mnemonic = this.mnemonic()
+                                const storedMnemonic = this.mnemonic()
 
-                                const mnemonic = stored_mnemonic ? stored_mnemonic : 
+                                const mnemonic = storedMnemonic ? storedMnemonic : 
                                 prompt("Paste your mnemonic space delimited (DO NOT USE WITH MAINNET ACCOUNTS)")
 
                                 if (!mnemonic) return false
@@ -51,7 +51,7 @@ export class SessionWallet {
                                 if (await this.wallet.connect(mnemonic)) {
                                         this.setMnemonic(mnemonic)
                                         this.setAccountList(this.wallet.accounts)
-                                        this.wallet.default_account = this.accountIndex()
+                                        this.wallet.defaultAccount = this.accountIndex()
                                         return true
                                 }
 
@@ -60,7 +60,7 @@ export class SessionWallet {
                         default:
                                 if (await this.wallet.connect()) {
                                         this.setAccountList(this.wallet.accounts)
-                                        this.wallet.default_account = this.accountIndex()
+                                        this.wallet.defaultAccount = this.accountIndex()
                                         return true
                                 }
 
@@ -74,35 +74,35 @@ export class SessionWallet {
 
         connected(): boolean { return (this.wallet !== undefined && this.wallet.isConnected()) }
 
-        setAccountList(accts: string[]) { sessionStorage.setItem(acct_list_key, JSON.stringify(accts)) }
+        setAccountList(accts: string[]) { sessionStorage.setItem(acctListKey, JSON.stringify(accts)) }
         accountList(): string[] {
-                const accts = sessionStorage.getItem(acct_list_key);
-                return accts == "" || accts == null ? [] : JSON.parse(accts)
+                const accts = sessionStorage.getItem(acctListKey);
+                return accts === "" || accts === null ? [] : JSON.parse(accts)
         }
 
-        setAccountIndex(idx: number) { this.wallet.default_account = idx; sessionStorage.setItem(acct_preference_key, idx.toString()) }
+        setAccountIndex(idx: number) { this.wallet.defaultAccount = idx; sessionStorage.setItem(acctPreferenceKey, idx.toString()) }
         accountIndex(): number {
-                const idx = sessionStorage.getItem(acct_preference_key);
-                return idx == null || idx == "" ? 0 : parseInt(idx)
+                const idx = sessionStorage.getItem(acctPreferenceKey);
+                return idx === null || idx === "" ? 0 : parseInt(idx, 10)
         }
 
-        setWalletPreference(wname: string) { this.wname = wname; sessionStorage.setItem(wallet_preference_key, wname) }
+        setWalletPreference(wname: string) { this.wname = wname; sessionStorage.setItem(walletPreferenceKey, wname) }
         walletPreference(): string {
-                const wp = sessionStorage.getItem(wallet_preference_key)
-                return wp == null ? "" : wp
+                const wp = sessionStorage.getItem(walletPreferenceKey)
+                return wp === null ? "" : wp
         }
 
-        setMnemonic(m: string) { sessionStorage.setItem(mnemonic_key, m) }
+        setMnemonic(m: string) { sessionStorage.setItem(mnemonicKey, m) }
         mnemonic(): string {
-                const mn = sessionStorage.getItem(mnemonic_key)
-                return mn == null ? "" : mn
+                const mn = sessionStorage.getItem(mnemonicKey)
+                return mn === null ? "" : mn
         }
 
         disconnect() {
-                sessionStorage.setItem(wallet_preference_key, '')
-                sessionStorage.setItem(acct_preference_key, '')
-                sessionStorage.setItem(acct_list_key, '')
-                sessionStorage.setItem(mnemonic_key, '')
+                sessionStorage.setItem(walletPreferenceKey, '')
+                sessionStorage.setItem(acctPreferenceKey, '')
+                sessionStorage.setItem(acctListKey, '')
+                sessionStorage.setItem(mnemonicKey, '')
                 this.wallet = undefined
                 this.wname = undefined
         }

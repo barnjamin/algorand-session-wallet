@@ -4,7 +4,7 @@ import algosdk from 'algosdk'
 
 class InsecureWallet implements Wallet {
     accounts: string[]
-    default_account: number
+    defaultAccount: number
     network: string
 
     pkToSk: object
@@ -16,7 +16,7 @@ class InsecureWallet implements Wallet {
 
         this.accounts = [sk.addr]
         this.pkToSk  = {[sk.addr]: mnemonic.split(" ")}
-        this.default_account = 0;
+        this.defaultAccount = 0;
 
         return true
     }
@@ -35,15 +35,17 @@ class InsecureWallet implements Wallet {
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""
-        return this.accounts[this.default_account];
+        return this.accounts[this.defaultAccount];
     }
 
     async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
         const signed = [];
-        const default_addr = this.getDefaultAccount()
-        for(let txidx in txns){
-            let addr = algosdk.encodeAddress(txns[txidx].from.publicKey)
-            if(addr == default_addr){
+        const defaultAddr = this.getDefaultAccount()
+        for(const txidx in txns){
+            if(!txns[txidx]) continue
+
+            const addr = algosdk.encodeAddress(txns[txidx].from.publicKey)
+            if(addr === defaultAddr){
                 signed.push(algosdk.signTransaction(txns[txidx], this.pkToSk[addr].sk)) 
             }else{
                 signed.push({txID:"", blob:new Uint8Array()})
@@ -53,12 +55,12 @@ class InsecureWallet implements Wallet {
     }
 
     async sign(txn: TransactionParams): Promise<SignedTxn> {
-        let addr = this.getDefaultAccount()
+        const addr = this.getDefaultAccount()
         return algosdk.signTransaction(new Transaction(txn), this.pkToSk[addr].sk)
     }
 
     async signBytes(b: Uint8Array): Promise<Uint8Array> {
-        let addr = this.getDefaultAccount()
+        const addr = this.getDefaultAccount()
         return algosdk.signBytes(b, this.pkToSk[addr].sk)
     }
 

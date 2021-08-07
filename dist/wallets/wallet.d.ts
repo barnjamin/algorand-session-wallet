@@ -4,8 +4,8 @@ export interface SignedTxn {
     blob: Uint8Array;
 }
 export interface Wallet {
-    accounts: Array<string>;
-    default_account: number;
+    accounts: string[];
+    defaultAccount: number;
     network: string;
     img(inverted: boolean): string;
     connect(settings?: any): Promise<boolean>;

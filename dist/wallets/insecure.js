@@ -19,7 +19,7 @@ class InsecureWallet {
             const sk = algosdk_2.default.mnemonicToSecretKey(mnemonic);
             this.accounts = [sk.addr];
             this.pkToSk = { [sk.addr]: mnemonic.split(" ") };
-            this.default_account = 0;
+            this.defaultAccount = 0;
             return true;
         });
     }
@@ -35,15 +35,17 @@ class InsecureWallet {
     getDefaultAccount() {
         if (!this.isConnected())
             return "";
-        return this.accounts[this.default_account];
+        return this.accounts[this.defaultAccount];
     }
     signTxn(txns) {
         return __awaiter(this, void 0, void 0, function* () {
             const signed = [];
-            const default_addr = this.getDefaultAccount();
-            for (let txidx in txns) {
-                let addr = algosdk_2.default.encodeAddress(txns[txidx].from.publicKey);
-                if (addr == default_addr) {
+            const defaultAddr = this.getDefaultAccount();
+            for (const txidx in txns) {
+                if (!txns[txidx])
+                    continue;
+                const addr = algosdk_2.default.encodeAddress(txns[txidx].from.publicKey);
+                if (addr === defaultAddr) {
                     signed.push(algosdk_2.default.signTransaction(txns[txidx], this.pkToSk[addr].sk));
                 }
                 else {
@@ -55,13 +57,13 @@ class InsecureWallet {
     }
     sign(txn) {
         return __awaiter(this, void 0, void 0, function* () {
-            let addr = this.getDefaultAccount();
+            const addr = this.getDefaultAccount();
             return algosdk_2.default.signTransaction(new algosdk_1.Transaction(txn), this.pkToSk[addr].sk);
         });
     }
     signBytes(b) {
         return __awaiter(this, void 0, void 0, function* () {
-            let addr = this.getDefaultAccount();
+            const addr = this.getDefaultAccount();
             return algosdk_2.default.signBytes(b, this.pkToSk[addr].sk);
         });
     }

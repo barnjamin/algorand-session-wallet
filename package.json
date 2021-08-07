@@ -1,10 +1,11 @@
 {
   "name": "algorand-session-wallet",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Session wallet to allow persisted wallet connection across multiple wallets",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "types":"dist/index.d.ts",
   "files": [
-    "lib/**/*"
+    "dist/**/*"
   ],
   "dependencies": {
     "@randlabs/myalgo-connect": "^1.1.0",
@@ -20,7 +21,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
     "prepublishOnly": "npm test && npm run lint",

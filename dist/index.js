@@ -19,10 +19,10 @@ exports.allowedWallets = {
     'insecure-wallet': insecure_1.default,
     'dev-wallet': insecure_1.default
 };
-const wallet_preference_key = 'wallet-preference';
-const acct_list_key = 'acct-list';
-const acct_preference_key = 'acct-preference';
-const mnemonic_key = 'mnemonic';
+const walletPreferenceKey = 'wallet-preference';
+const acctListKey = 'acct-list';
+const acctPreferenceKey = 'acct-preference';
+const mnemonicKey = 'mnemonic';
 class SessionWallet {
     constructor(network, wname) {
         if (wname)
@@ -33,7 +33,7 @@ class SessionWallet {
             return;
         this.wallet = new exports.allowedWallets[this.wname](network);
         this.wallet.accounts = this.accountList();
-        this.wallet.default_account = this.accountIndex();
+        this.wallet.defaultAccount = this.accountIndex();
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
@@ -41,22 +41,22 @@ class SessionWallet {
                 return false;
             switch (this.wname) {
                 case 'insecure-wallet':
-                    const stored_mnemonic = this.mnemonic();
-                    const mnemonic = stored_mnemonic ? stored_mnemonic :
+                    const storedMnemonic = this.mnemonic();
+                    const mnemonic = storedMnemonic ? storedMnemonic :
                         prompt("Paste your mnemonic space delimited (DO NOT USE WITH MAINNET ACCOUNTS)");
                     if (!mnemonic)
                         return false;
                     if (yield this.wallet.connect(mnemonic)) {
                         this.setMnemonic(mnemonic);
                         this.setAccountList(this.wallet.accounts);
-                        this.wallet.default_account = this.accountIndex();
+                        this.wallet.defaultAccount = this.accountIndex();
                         return true;
                     }
                     break;
                 default:
                     if (yield this.wallet.connect()) {
                         this.setAccountList(this.wallet.accounts);
-                        this.wallet.default_account = this.accountIndex();
+                        this.wallet.defaultAccount = this.accountIndex();
                         return true;
                     }
                     break;
@@ -67,31 +67,31 @@ class SessionWallet {
         });
     }
     connected() { return (this.wallet !== undefined && this.wallet.isConnected()); }
-    setAccountList(accts) { sessionStorage.setItem(acct_list_key, JSON.stringify(accts)); }
+    setAccountList(accts) { sessionStorage.setItem(acctListKey, JSON.stringify(accts)); }
     accountList() {
-        const accts = sessionStorage.getItem(acct_list_key);
-        return accts == "" || accts == null ? [] : JSON.parse(accts);
+        const accts = sessionStorage.getItem(acctListKey);
+        return accts === "" || accts === null ? [] : JSON.parse(accts);
     }
-    setAccountIndex(idx) { this.wallet.default_account = idx; sessionStorage.setItem(acct_preference_key, idx.toString()); }
+    setAccountIndex(idx) { this.wallet.defaultAccount = idx; sessionStorage.setItem(acctPreferenceKey, idx.toString()); }
     accountIndex() {
-        const idx = sessionStorage.getItem(acct_preference_key);
-        return idx == null || idx == "" ? 0 : parseInt(idx);
+        const idx = sessionStorage.getItem(acctPreferenceKey);
+        return idx === null || idx === "" ? 0 : parseInt(idx, 10);
     }
-    setWalletPreference(wname) { this.wname = wname; sessionStorage.setItem(wallet_preference_key, wname); }
+    setWalletPreference(wname) { this.wname = wname; sessionStorage.setItem(walletPreferenceKey, wname); }
     walletPreference() {
-        const wp = sessionStorage.getItem(wallet_preference_key);
-        return wp == null ? "" : wp;
+        const wp = sessionStorage.getItem(walletPreferenceKey);
+        return wp === null ? "" : wp;
     }
-    setMnemonic(m) { sessionStorage.setItem(mnemonic_key, m); }
+    setMnemonic(m) { sessionStorage.setItem(mnemonicKey, m); }
     mnemonic() {
-        const mn = sessionStorage.getItem(mnemonic_key);
-        return mn == null ? "" : mn;
+        const mn = sessionStorage.getItem(mnemonicKey);
+        return mn === null ? "" : mn;
     }
     disconnect() {
-        sessionStorage.setItem(wallet_preference_key, '');
-        sessionStorage.setItem(acct_preference_key, '');
-        sessionStorage.setItem(acct_list_key, '');
-        sessionStorage.setItem(mnemonic_key, '');
+        sessionStorage.setItem(walletPreferenceKey, '');
+        sessionStorage.setItem(acctPreferenceKey, '');
+        sessionStorage.setItem(acctListKey, '');
+        sessionStorage.setItem(mnemonicKey, '');
         this.wallet = undefined;
         this.wname = undefined;
     }

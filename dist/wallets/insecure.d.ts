@@ -2,7 +2,7 @@ import { Transaction, TransactionParams } from 'algosdk';
 import { SignedTxn, Wallet } from './wallet';
 declare class InsecureWallet implements Wallet {
     accounts: string[];
-    default_account: number;
+    defaultAccount: number;
     network: string;
     pkToSk: object;
     connect(mnemonic: string): Promise<boolean>;
