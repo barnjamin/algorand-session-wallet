@@ -37,8 +37,6 @@ export class SessionWallet {
         }
 
         async connect(): Promise<boolean> {
-                if (this.wallet === undefined) return false
-
                 switch (this.wname) {
                         case 'insecure-wallet':
                                 const storedMnemonic = this.mnemonic()
@@ -103,8 +101,6 @@ export class SessionWallet {
                 sessionStorage.setItem(acctPreferenceKey, '')
                 sessionStorage.setItem(acctListKey, '')
                 sessionStorage.setItem(mnemonicKey, '')
-                this.wallet = undefined
-                this.wname = undefined
         }
 
         getDefaultAccount(): string {

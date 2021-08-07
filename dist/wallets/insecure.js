@@ -8,9 +8,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const algosdk_1 = require("algosdk");
-const algosdk_2 = require("algosdk");
+const algosdk_2 = __importDefault(require("algosdk"));
 class InsecureWallet {
     connect(mnemonic) {
         return __awaiter(this, void 0, void 0, function* () {

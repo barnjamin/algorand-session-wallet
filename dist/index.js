@@ -8,11 +8,14 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionWallet = exports.allowedWallets = void 0;
-const algosigner_1 = require("./wallets/algosigner");
-const myalgoconnect_1 = require("./wallets/myalgoconnect");
-const insecure_1 = require("./wallets/insecure");
+const algosigner_1 = __importDefault(require("./wallets/algosigner"));
+const myalgoconnect_1 = __importDefault(require("./wallets/myalgoconnect"));
+const insecure_1 = __importDefault(require("./wallets/insecure"));
 exports.allowedWallets = {
     'algo-signer': algosigner_1.default,
     'my-algo-connect': myalgoconnect_1.default,
@@ -37,8 +40,6 @@ class SessionWallet {
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
-            if (this.wallet === undefined)
-                return false;
             switch (this.wname) {
                 case 'insecure-wallet':
                     const storedMnemonic = this.mnemonic();
@@ -92,8 +93,6 @@ class SessionWallet {
         sessionStorage.setItem(acctPreferenceKey, '');
         sessionStorage.setItem(acctListKey, '');
         sessionStorage.setItem(mnemonicKey, '');
-        this.wallet = undefined;
-        this.wname = undefined;
     }
     getDefaultAccount() {
         if (!this.connected())
