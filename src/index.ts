@@ -5,6 +5,8 @@ import { Wallet, SignedTxn } from './wallets/wallet'
 
 import { Transaction } from 'algosdk'
 
+export {Wallet, SignedTxn} from './wallets/wallet'
+
 export const allowedWallets = {
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
@@ -36,6 +38,8 @@ export class SessionWallet {
         }
 
         async connect(): Promise<boolean> {
+		if(this.wallet === undefined) return false;
+
                 switch (this.wname) {
                         case 'insecure-wallet':
                                 const storedMnemonic = this.mnemonic()

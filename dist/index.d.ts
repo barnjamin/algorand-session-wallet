@@ -3,6 +3,7 @@ import MyAlgoConnectWallet from './wallets/myalgoconnect';
 import InsecureWallet from './wallets/insecure';
 import { Wallet, SignedTxn } from './wallets/wallet';
 import { Transaction } from 'algosdk';
+export { Wallet, SignedTxn } from './wallets/wallet';
 export declare const allowedWallets: {
     'algo-signer': typeof AlgoSignerWallet;
     'my-algo-connect': typeof MyAlgoConnectWallet;
