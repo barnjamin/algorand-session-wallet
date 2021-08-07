@@ -20,7 +20,6 @@ exports.allowedWallets = {
     'algo-signer': algosigner_1.default,
     'my-algo-connect': myalgoconnect_1.default,
     'insecure-wallet': insecure_1.default,
-    'dev-wallet': insecure_1.default
 };
 const walletPreferenceKey = 'wallet-preference';
 const acctListKey = 'acct-list';

@@ -7,7 +7,6 @@ export declare const allowedWallets: {
     'algo-signer': typeof AlgoSignerWallet;
     'my-algo-connect': typeof MyAlgoConnectWallet;
     'insecure-wallet': typeof InsecureWallet;
-    'dev-wallet': typeof InsecureWallet;
 };
 export declare class SessionWallet {
     wallet: Wallet;

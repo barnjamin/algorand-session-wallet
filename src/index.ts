@@ -9,7 +9,6 @@ export const allowedWallets = {
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
         'insecure-wallet': InsecureWallet,
-        'dev-wallet': InsecureWallet
 }
 
 const walletPreferenceKey = 'wallet-preference'

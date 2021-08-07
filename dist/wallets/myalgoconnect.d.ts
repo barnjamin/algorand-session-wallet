@@ -1,6 +1,6 @@
 import { Transaction } from 'algosdk';
 import { SignedTxn, Wallet } from './wallet';
-import { default as MyAlgo } from '@randlabs/myalgo-connect';
+import MyAlgo from '@randlabs/myalgo-connect';
 declare class MyAlgoConnectWallet implements Wallet {
     accounts: string[];
     defaultAccount: number;
