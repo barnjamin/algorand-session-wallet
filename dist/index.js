@@ -39,6 +39,8 @@ class SessionWallet {
     }
     connect() {
         return __awaiter(this, void 0, void 0, function* () {
+            if (this.wallet === undefined)
+                return false;
             switch (this.wname) {
                 case 'insecure-wallet':
                     const storedMnemonic = this.mnemonic();

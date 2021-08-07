@@ -20,6 +20,9 @@ class MyAlgoConnectWallet implements Wallet {
         this.walletConn = new MyAlgo()
     }
 
+    static displayName():string{ return "My Algo" }
+    displayName(): string { return MyAlgoConnectWallet.displayName() }
+
     static img(inverted: boolean): string {
         return inverted?  logoInverted : logo 
     }

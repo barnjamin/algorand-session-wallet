@@ -24,6 +24,9 @@ class InsecureWallet implements Wallet {
         return true
     }
 
+    static displayName():string{ return "Insecure Wallet" }
+    displayName(): string { return InsecureWallet.displayName() }
+
     static img(inverted: boolean): string {
         return logo 
     }

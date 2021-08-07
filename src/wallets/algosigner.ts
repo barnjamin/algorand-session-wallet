@@ -18,6 +18,9 @@ class AlgoSignerWallet implements Wallet {
         this.defaultAccount = 0
     }
 
+    static displayName():string{ return "AlgoSigner" }
+    displayName(): string { return AlgoSignerWallet.displayName() }
+
     static img(inverted: boolean): string {
         return inverted?logoInverted:logo
     }
