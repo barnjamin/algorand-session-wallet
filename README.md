@@ -1,5 +1,7 @@
 # algorand-session-wallet
 
+*PRs welcome*
+
 ```sh
 npm -i algorand-session-wallet
 ```
