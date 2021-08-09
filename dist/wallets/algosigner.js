@@ -60,11 +60,8 @@ class AlgoSignerWallet {
             return false;
         });
     }
-    isConnected() {
-        if (typeof AlgoSigner === 'undefined')
-            return false;
-        return this.accounts && this.accounts.length > 0;
-    }
+    // Only checking accounts, not that algosigner is loaded because sometimes it takes a few tries
+    isConnected() { return this.accounts && this.accounts.length > 0; }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";
