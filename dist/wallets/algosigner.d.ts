@@ -5,6 +5,8 @@ declare class AlgoSignerWallet implements Wallet {
     defaultAccount: number;
     network: string;
     constructor(network: string);
+    static displayName(): string;
+    displayName(): string;
     static img(inverted: boolean): string;
     img(inverted: boolean): string;
     connect(): Promise<boolean>;

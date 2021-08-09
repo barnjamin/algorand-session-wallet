@@ -61,11 +61,8 @@ class AlgoSignerWallet implements Wallet {
         return false
     }
 
-
-    isConnected(): boolean {
-        if (typeof AlgoSigner === 'undefined') return false;
-        return this.accounts && this.accounts.length>0
-    }
+    // Only checking accounts, not that algosigner is loaded because sometimes it takes a few tries
+    isConnected(): boolean { return this.accounts && this.accounts.length>0 }
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""

@@ -21,6 +21,8 @@ class AlgoSignerWallet {
         this.accounts = [];
         this.defaultAccount = 0;
     }
+    static displayName() { return "AlgoSigner"; }
+    displayName() { return AlgoSignerWallet.displayName(); }
     static img(inverted) {
         return inverted ? logoInverted : logo;
     }

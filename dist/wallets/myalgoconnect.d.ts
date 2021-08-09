@@ -7,6 +7,8 @@ declare class MyAlgoConnectWallet implements Wallet {
     network: string;
     walletConn: MyAlgo;
     constructor();
+    static displayName(): string;
+    displayName(): string;
     static img(inverted: boolean): string;
     img(inverted: boolean): string;
     connect(): Promise<boolean>;

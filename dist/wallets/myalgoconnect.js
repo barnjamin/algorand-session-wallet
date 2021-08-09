@@ -22,6 +22,8 @@ class MyAlgoConnectWallet {
         this.defaultAccount = 0;
         this.walletConn = new myalgo_connect_1.default();
     }
+    static displayName() { return "My Algo"; }
+    displayName() { return MyAlgoConnectWallet.displayName(); }
     static img(inverted) {
         return inverted ? logoInverted : logo;
     }

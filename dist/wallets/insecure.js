@@ -27,6 +27,8 @@ class InsecureWallet {
             return true;
         });
     }
+    static displayName() { return "Insecure Wallet"; }
+    displayName() { return InsecureWallet.displayName(); }
     static img(inverted) {
         return logo;
     }
