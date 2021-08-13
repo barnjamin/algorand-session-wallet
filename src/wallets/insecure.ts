@@ -12,9 +12,13 @@ class InsecureWallet implements Wallet {
 
     pkToSk: object
 
-    async connect(mnemonic: string): Promise<boolean> {
-        if(this.isConnected()) return true
+    constructor(network: string){
+        this.accounts = []
+        this.pkToSk  = {}
+        this.defaultAccount = 0;
+    }
 
+    async connect(mnemonic: string): Promise<boolean> {
         const sk = algosdk.mnemonicToSecretKey(mnemonic)
 
         this.accounts = [sk.addr]

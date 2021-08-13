@@ -5,6 +5,7 @@ declare class InsecureWallet implements Wallet {
     defaultAccount: number;
     network: string;
     pkToSk: object;
+    constructor(network: string);
     connect(mnemonic: string): Promise<boolean>;
     static displayName(): string;
     displayName(): string;
