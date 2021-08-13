@@ -1,6 +1,6 @@
 {
   "name": "algorand-session-wallet",
-  "version": "1.1.8",
+  "version": "1.2.0",
   "description": "Session wallet to allow persisted wallet connection across multiple wallets",
   "main": "dist/index.js",
   "types":"dist/index.d.ts",

@@ -102,7 +102,7 @@ class SessionWallet {
     }
     signTxn(txns) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (!this.connected())
+            if (!this.connected() && !(yield this.connect()))
                 return [];
             return this.wallet.signTxn(txns);
         });

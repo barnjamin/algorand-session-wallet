@@ -112,7 +112,7 @@ export class SessionWallet {
         }
 
         async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
-                if (!this.connected()) return []
+                if (!this.connected() && !await this.connect()) return []
                 return this.wallet.signTxn(txns)
         }
 
