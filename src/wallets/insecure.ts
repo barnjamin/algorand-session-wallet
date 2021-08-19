@@ -16,6 +16,7 @@ class InsecureWallet implements Wallet {
         this.accounts = []
         this.pkToSk  = {}
         this.defaultAccount = 0;
+	this.network = network
     }
 
     async connect(mnemonic: string): Promise<boolean> {
