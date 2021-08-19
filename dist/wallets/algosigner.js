@@ -88,19 +88,19 @@ class AlgoSignerWallet {
             });
         });
     }
-    sign(txn, permissionCallback) {
+    sign(txn) {
         return __awaiter(this, void 0, void 0, function* () {
             const stxn = yield AlgoSigner.sign(txn);
             const blob = new Uint8Array(Buffer.from(stxn.blob, 'base64'));
             return { txID: stxn.txID, blob: blob };
         });
     }
-    signBytes(b, permissionCallback) {
+    signBytes(b) {
         return __awaiter(this, void 0, void 0, function* () {
             throw new Error('Method not implemented.');
         });
     }
-    signTeal(teal, permissionCallback) {
+    signTeal(teal) {
         return __awaiter(this, void 0, void 0, function* () {
             throw new Error('Method not implemented.');
         });

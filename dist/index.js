@@ -36,6 +36,7 @@ class SessionWallet {
         if (!(this.wname in exports.allowedWallets))
             return;
         this.wallet = new exports.allowedWallets[this.wname](network);
+        this.wallet.permissionCallback = this.permissionCallback;
         this.wallet.accounts = this.accountList();
         this.wallet.defaultAccount = this.accountIndex();
     }
@@ -106,7 +107,7 @@ class SessionWallet {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.connected() && !(yield this.connect()))
                 return [];
-            return this.wallet.signTxn(txns, this.permissionCallback);
+            return this.wallet.signTxn(txns);
         });
     }
 }

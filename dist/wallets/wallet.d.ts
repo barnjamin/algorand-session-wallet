@@ -14,12 +14,13 @@ export interface Wallet {
     accounts: string[];
     defaultAccount: number;
     network: string;
+    permissionCallback?: PermissionCallback;
     displayName(): string;
     img(inverted: boolean): string;
     connect(settings?: any): Promise<boolean>;
     isConnected(): boolean;
     getDefaultAccount(): string;
-    signTxn(txns: Transaction[], permissionCallback?: PermissionCallback): Promise<SignedTxn[]>;
-    signBytes(b: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
-    signTeal(teal: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
+    signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
+    signBytes(b: Uint8Array): Promise<Uint8Array>;
+    signTeal(teal: Uint8Array): Promise<Uint8Array>;
 }

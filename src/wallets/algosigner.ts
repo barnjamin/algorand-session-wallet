@@ -11,6 +11,7 @@ class AlgoSignerWallet implements Wallet {
     accounts: string[] 
     defaultAccount: number
     network: string
+    permissionCallback?:PermissionCallback
 
     constructor(network: string) { 
         this.network = network 
@@ -92,17 +93,17 @@ class AlgoSignerWallet implements Wallet {
         })
     }
 
-    async sign(txn: TransactionParams, permissionCallback?:PermissionCallback): Promise<SignedTxn> {
+    async sign(txn: TransactionParams): Promise<SignedTxn> {
         const stxn = await AlgoSigner.sign(txn)
         const blob = new Uint8Array(Buffer.from(stxn.blob, 'base64'))
         return {txID: stxn.txID, blob: blob}
     }
 
-    async signBytes(b: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
+    async signBytes(b: Uint8Array): Promise<Uint8Array> {
         throw new Error('Method not implemented.')
     }
 
-    async signTeal(teal: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
+    async signTeal(teal: Uint8Array): Promise<Uint8Array> {
         throw new Error('Method not implemented.')
     }
 }

@@ -58,11 +58,11 @@ class MyAlgoConnectWallet {
             return "";
         return this.accounts[this.defaultAccount];
     }
-    signTxn(txns, permissionCallback) {
+    signTxn(txns) {
         return __awaiter(this, void 0, void 0, function* () {
             const defaultAcct = this.getDefaultAccount();
-            if (permissionCallback) {
-                return yield permissionCallback.request({
+            if (this.permissionCallback) {
+                return yield this.permissionCallback.request({
                     approved: () => __awaiter(this, void 0, void 0, function* () {
                         const unsigned = [];
                         const signedTxns = [];
@@ -79,7 +79,7 @@ class MyAlgoConnectWallet {
                             }
                         }
                         const s = yield this.walletConn.signTransaction(unsigned);
-                        for (let x = 0; x < signed.length; x++) {
+                        for (let x = 0; x < signedTxns.length; x++) {
                             if (typeof signedTxns[x] === 'number')
                                 signedTxns[x] = s[signedTxns[x]];
                         }

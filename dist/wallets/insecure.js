@@ -65,19 +65,19 @@ class InsecureWallet {
             return signed;
         });
     }
-    sign(txn, permissionCallback) {
+    sign(txn) {
         return __awaiter(this, void 0, void 0, function* () {
             const addr = this.getDefaultAccount();
             return algosdk_2.default.signTransaction(new algosdk_1.Transaction(txn), this.pkToSk[addr].sk);
         });
     }
-    signBytes(b, permissionCallback) {
+    signBytes(b) {
         return __awaiter(this, void 0, void 0, function* () {
             const addr = this.getDefaultAccount();
             return algosdk_2.default.signBytes(b, this.pkToSk[addr].sk);
         });
     }
-    signTeal(teal, permissionCallback) {
+    signTeal(teal) {
         return __awaiter(this, void 0, void 0, function* () {
             throw new Error('Method not implemented.');
         });

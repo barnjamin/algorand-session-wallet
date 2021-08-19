@@ -5,6 +5,7 @@ declare class MyAlgoConnectWallet implements Wallet {
     accounts: string[];
     defaultAccount: number;
     network: string;
+    permissionCallback?: PermissionCallback;
     walletConn: MyAlgo;
     constructor();
     static displayName(): string;
@@ -14,7 +15,7 @@ declare class MyAlgoConnectWallet implements Wallet {
     connect(): Promise<boolean>;
     isConnected(): boolean;
     getDefaultAccount(): string;
-    signTxn(txns: Transaction[], permissionCallback?: PermissionCallback): Promise<SignedTxn[]>;
+    signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
     signBytes(b: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
     signTeal(teal: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
 }

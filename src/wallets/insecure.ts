@@ -9,6 +9,7 @@ class InsecureWallet implements Wallet {
     accounts: string[]
     defaultAccount: number
     network: string
+    permissionCallback?: PermissionCallback
 
     pkToSk: object
 
@@ -65,17 +66,17 @@ class InsecureWallet implements Wallet {
         return signed
     }
 
-    async sign(txn: TransactionParams, permissionCallback?:PermissionCallback): Promise<SignedTxn> {
+    async sign(txn: TransactionParams): Promise<SignedTxn> {
         const addr = this.getDefaultAccount()
         return algosdk.signTransaction(new Transaction(txn), this.pkToSk[addr].sk)
     }
 
-    async signBytes(b: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
+    async signBytes(b: Uint8Array): Promise<Uint8Array> {
         const addr = this.getDefaultAccount()
         return algosdk.signBytes(b, this.pkToSk[addr].sk)
     }
 
-    async signTeal(teal: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
+    async signTeal(teal: Uint8Array): Promise<Uint8Array> {
         throw new Error('Method not implemented.')
     }
 }

@@ -17,6 +17,7 @@ class MyAlgoConnectWallet implements Wallet {
     accounts: string[]
     defaultAccount: number
     network: string
+    permissionCallback?: PermissionCallback
 
     walletConn: MyAlgo 
 
@@ -60,12 +61,12 @@ class MyAlgoConnectWallet implements Wallet {
         return this.accounts[this.defaultAccount];
     }
 
-    async signTxn(txns: Transaction[], permissionCallback?: PermissionCallback): Promise<SignedTxn[]> {
+    async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
 
         const defaultAcct = this.getDefaultAccount()
 
-        if(permissionCallback){
-             return await permissionCallback.request({
+        if(this.permissionCallback){
+             return await this.permissionCallback.request({
                 approved: async (): Promise<SignedTxn[]> =>{
                     const unsigned = []
                     const signedTxns = []
@@ -82,7 +83,7 @@ class MyAlgoConnectWallet implements Wallet {
                     }
 
                     const s = await this.walletConn.signTransaction(unsigned)
-                    for(let x=0; x<signed.length;x++){
+                    for(let x=0; x<signedTxns.length;x++){
                         if(typeof signedTxns[x] === 'number') signedTxns[x] = s[signedTxns[x]]
                     }
 

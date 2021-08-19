@@ -13,7 +13,7 @@ export declare class SessionWallet {
     wallet: Wallet;
     wname: string;
     network: string;
-    permissionCallback: PermissionCallback;
+    permissionCallback?: PermissionCallback;
     constructor(network: string, permissionCallback?: PermissionCallback, wname?: string);
     connect(): Promise<boolean>;
     connected(): boolean;

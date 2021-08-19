@@ -23,7 +23,7 @@ export class SessionWallet {
         wallet: Wallet
         wname: string
         network: string
-        permissionCallback: PermissionCallback
+        permissionCallback?: PermissionCallback
 
         constructor(network: string, permissionCallback?: PermissionCallback, wname?: string) {
                 if (wname) this.setWalletPreference(wname)
@@ -37,6 +37,7 @@ export class SessionWallet {
                 if (!(this.wname in allowedWallets)) return
 
                 this.wallet = new allowedWallets[this.wname](network)
+		this.wallet.permissionCallback = this.permissionCallback
                 this.wallet.accounts = this.accountList()
                 this.wallet.defaultAccount = this.accountIndex()
         }
@@ -117,7 +118,7 @@ export class SessionWallet {
 
         async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
                 if (!this.connected() && !await this.connect()) return []
-                return this.wallet.signTxn(txns, this.permissionCallback)
+                return this.wallet.signTxn(txns)
         }
 
 }

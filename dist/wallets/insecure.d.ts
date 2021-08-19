@@ -4,6 +4,7 @@ declare class InsecureWallet implements Wallet {
     accounts: string[];
     defaultAccount: number;
     network: string;
+    permissionCallback?: PermissionCallback;
     pkToSk: object;
     constructor(network: string);
     connect(mnemonic: string): Promise<boolean>;
@@ -14,8 +15,8 @@ declare class InsecureWallet implements Wallet {
     isConnected(): boolean;
     getDefaultAccount(): string;
     signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
-    sign(txn: TransactionParams, permissionCallback?: PermissionCallback): Promise<SignedTxn>;
-    signBytes(b: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
-    signTeal(teal: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
+    sign(txn: TransactionParams): Promise<SignedTxn>;
+    signBytes(b: Uint8Array): Promise<Uint8Array>;
+    signTeal(teal: Uint8Array): Promise<Uint8Array>;
 }
 export default InsecureWallet;
