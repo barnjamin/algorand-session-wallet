@@ -1,11 +1,10 @@
 import AlgoSignerWallet from './wallets/algosigner'
 import MyAlgoConnectWallet from './wallets/myalgoconnect'
 import InsecureWallet from './wallets/insecure'
-import { Wallet, SignedTxn } from './wallets/wallet'
-
+import {PermissionResult, PermissionCallback, Wallet, SignedTxn } from './wallets/wallet'
 import { Transaction } from 'algosdk'
 
-export {Wallet, SignedTxn} from './wallets/wallet'
+export {PermissionResult, PermissionCallback, Wallet, SignedTxn} from './wallets/wallet'
 
 export const allowedWallets = {
         'algo-signer': AlgoSignerWallet,
@@ -18,17 +17,22 @@ const acctListKey = 'acct-list'
 const acctPreferenceKey = 'acct-preference'
 const mnemonicKey = 'mnemonic'
 
+
+
 export class SessionWallet {
         wallet: Wallet
         wname: string
         network: string
+        permissionCallback: PermissionCallback
 
-        constructor(network: string, wname?: string) {
+        constructor(network: string, permissionCallback?: PermissionCallback, wname?: string) {
                 if (wname) this.setWalletPreference(wname)
 
                 this.network = network
 
                 this.wname = this.walletPreference()
+
+                if(permissionCallback) this.permissionCallback = permissionCallback
 
                 if (!(this.wname in allowedWallets)) return
 
@@ -113,7 +117,7 @@ export class SessionWallet {
 
         async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
                 if (!this.connected() && !await this.connect()) return []
-                return this.wallet.signTxn(txns)
+                return this.wallet.signTxn(txns, this.permissionCallback)
         }
 
 }

@@ -20,6 +20,7 @@ class InsecureWallet {
         this.accounts = [];
         this.pkToSk = {};
         this.defaultAccount = 0;
+        this.network = network;
     }
     connect(mnemonic) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -64,20 +65,22 @@ class InsecureWallet {
             return signed;
         });
     }
-    sign(txn) {
+    sign(txn, permissionCallback) {
         return __awaiter(this, void 0, void 0, function* () {
             const addr = this.getDefaultAccount();
             return algosdk_2.default.signTransaction(new algosdk_1.Transaction(txn), this.pkToSk[addr].sk);
         });
     }
-    signBytes(b) {
+    signBytes(b, permissionCallback) {
         return __awaiter(this, void 0, void 0, function* () {
             const addr = this.getDefaultAccount();
             return algosdk_2.default.signBytes(b, this.pkToSk[addr].sk);
         });
     }
-    signTeal(teal) {
-        throw new Error('Method not implemented.');
+    signTeal(teal, permissionCallback) {
+        return __awaiter(this, void 0, void 0, function* () {
+            throw new Error('Method not implemented.');
+        });
     }
 }
 exports.default = InsecureWallet;

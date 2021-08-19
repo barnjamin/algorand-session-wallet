@@ -26,11 +26,13 @@ const acctListKey = 'acct-list';
 const acctPreferenceKey = 'acct-preference';
 const mnemonicKey = 'mnemonic';
 class SessionWallet {
-    constructor(network, wname) {
+    constructor(network, permissionCallback, wname) {
         if (wname)
             this.setWalletPreference(wname);
         this.network = network;
         this.wname = this.walletPreference();
+        if (permissionCallback)
+            this.permissionCallback = permissionCallback;
         if (!(this.wname in exports.allowedWallets))
             return;
         this.wallet = new exports.allowedWallets[this.wname](network);
@@ -104,7 +106,7 @@ class SessionWallet {
         return __awaiter(this, void 0, void 0, function* () {
             if (!this.connected() && !(yield this.connect()))
                 return [];
-            return this.wallet.signTxn(txns);
+            return this.wallet.signTxn(txns, this.permissionCallback);
         });
     }
 }

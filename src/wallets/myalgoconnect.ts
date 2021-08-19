@@ -1,5 +1,5 @@
 import algosdk, { Transaction } from 'algosdk'
-import {SignedTxn, Wallet} from './wallet'
+import {PermissionCallback, SignedTxn, Wallet} from './wallet'
 import MyAlgo from '@randlabs/myalgo-connect'
 
 const logoInverted = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQEAAAEGCAYAAABl6SBFAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAEHpJREFUeNrsnf9RGzsXhhUm/3++FVxTQUgFLBUAFcRUEKiAUIGhAkwFMRWwVBCngriDOBXwrYycyxACllZaSec8z4yHuXcCLPrx7nuOjqR3Dw8PBgD0skMTACACAIAIAAAiAACIAAAgAgCACAAAIgAAiAAAIAIAgAgAACIAAIgAACACAIAIAAAiAACIAAAgAgCACAAAIgAAiAAAIAIAgAgAACIAANXyPtcvfvfuHa0/IA8PD3vdl1FAP7W03qD9pEcEIMkEb9z/2ndfgyb+K4NyIwiL7vPLfV12QrGgF+rlXa5ryHACwZOycZP7g/u6V8ijrQWh+3x3YrHo+nhFj5XvBBCBsgfE5u2+7yZ7U9mfsHCfeysMXZ8v6VVEABHYztrbyX5Y4aTfRhSsS7gl14AIIAJ/TvxP3eeo+4yV/Nk2VJg7QZgzChABjZ1tJ/tnZRP/LUG40e4QEAEdMf6Rm/x7Bl7C5g1uus9MYw4BEZD91j93AjBinm+NdQdXmtwBIiCvQxs3+Rvmcy8WTgxmiAAiwOQnVLiQLAaIAJMflIsBIsDkB+VigAjU12Hj7svUPCb8IB+tE4MWEUAEhuoom+E/NY9LfWT7y8E6grOa9ywgAvVY/2tDgU+prJwruEQEEIEUb/9rrH812GXFk9q2OeeYj5wstF3H2In/AwGoCluR+a3ruy80BU6g79vfJv4mDJXqXcFxDWXIOIGyOmP9JkEARLkC+hIR2FoATp0AjGkNMaxzOl3fXjuHB4QDf7X/JP90hAdFJg0JB/Lb/zsEQE14cOcSvoQDNMHvtf87wx5/beHBVxf6IQLKBWDiBIA4USdTmydABPQKwNTlAEA3k24s3GlNGKpNDDr1nzD+4Qk2UXiQc+8BiUEEAPKySRiqcgQ7yib/yNo+BAC2EAI1SWI14YBTd1YAYFtWLjRYDDxOEQEEAAoTgt0hcwTkBNJxjQBAACMNOQLxIuCSgFSGQd8cwQgRqFcAJoxjQAgUioA7TAIBgJhCMJX4h4lMDLpSYCoBIQWX3dg9Szh2EYEIjbg5DAQgFSep7jpABPo3oI3Z7FmAbAaC1HxMUUPAEmF/2A0Ig401KYlCMSLgVgKoBYCh2BSgIQKFCMDEsBIAw7PntqNXTfU5AXcf4DfCAMjIQax7EEkMhjXaN8IAyEy0PQYkBv0b7AsCAIXkB6qtS6nWCVAPAAVibzmaEw4MJwKEASAuLCAcIAwAwgKcAGEACCB4tQAnsB1TxhgUTlX3HVYlAq4oqGGMQeGMu081NxtVEw44ZeWmYKgFmxy0m4yWhAPxOEUAoCLsS+scJxDJCVAaDBXjteU4x3x8X0lDniMAa1qPf7tXQJstnC3eNo6W6PRsIvsAJ9DDCTgX8IP5b9quzbYeTO7K7ZwrKcvueXc9nndi5B4Jt/WSITmBv7sAMMb3XLs28/OeeP77ueC+K3oMF+0EcAG/mXXt5TupbPv9zBQSeLmWJ88ruRR8KzeAE8AFvMQqwAXkdgOhz3uLGzCIwBNFtG+wCRpgrnpsSLnP5FpCD+CUHBI0ztkiAh6cMv/XybUvPb5/6EnVx7UYJx4rwf15jgj48RkNMBd9vtlVqy0rcS0a3MCkxD0FRYqAWy7SXhfQRrrgYqi8gBWbywg/5154v54iAriAQVxAhkl1EeOMPeFOwPIJEXjbBdglIu0HhsxinV47kBOI5VqME5KF4L4dd2P8CBHABQzlAobKC1xE/nk3wvv3EBF4nSPtAuC7/TSzxZ5HdC1DupecFJUgLEoEnE3SnBC0Vvgywc9NmReIfk23WypcCu/rI0TgZT4Z3ZxFSq4N9WZN4Vq0uIFiQoJi9g44e/RTsQB47boLcFmx6/Kj3brziiv8KrzP/3neftr3DmjPBZwk/vmx36wXqQRAiRMoZsyXJAL7igWg9U2u2bsX3HJqjryAdS2Xns975LM05gSGkAAngAv4y4SyoZNdSm08JtU88/NOAwb9rfB+xwk8GSR2MGtdFZgFJNemrr18J1WMN2sbsCS4OSS28fw+6dWDpoTCoVKcwKFSAfDededCgIn7T99JFSMk8HUBY/NfAdjYZztthg1QKsPgUkSgUSoCIbvupi+4qKHerCGu5fkhsbiBwsZ+dhFw8aLGvQLeZwU469iEDqKe+/VDXEtj/jwYxtf1Sd9VuJe7erAEJ6DVBYTU208j2MnQvECIaznv29+RE5q4gUJFQOPSoPeuO3eE+DjCAAp5s8ZyLZaRZwijISTY1y4CGkOBC88J9eqVVp4Z5jb1877iWoYUrqpCAsIBXcwCl9hGMd4kAXmBmK4lNC9AclCqCHhWvGl1AWPz9gGVvoOoTfi821zE6ZUMcysSkg8ayToXcjsBbSJwEVgYZGJOKrN9JV4K1zKEcBESVCQCY0UC4H1WgEugbRvvNwkmVArXEhoSSC8hHmsVAU0rA2eRlthi5AWsG3nLkaRyLUFOwDkSyXcS7GsVAS1OYBmQXJt4ThTfGvQ2o2tZ931AHCw5JBgjArIJOSvA97aasec1V/cZXUtoXuAWERAkAgEFI7USdFZA4KCIkRcYwrWEWmDJTiDbCsGOgaJcwJOzApLGla/kBYZwLUEhjIKlwpE2EdDgBGLsukvZpvOMriXUEUoOCXACwgjZdWcnU5+76vrmBYZ0LRuoHlTsBD4IF4GQXXfXEX5v6D6CoV1LkHsRfn35/7SJgOTjxEJ23TWRQiSfvMDm3r8cruW3BfZ0L5LdAOGAIEJu5ZlG+t2+QtJmdC2hz3zPEJMhAmOhbdr6HoThlthivQVGnktNNxldi7d7UZAXQAQEkGLXXbI3q4uxc7mWDb5LhVKvLyccEMCsx3HcMUlWhx7ZtYS6l7WDETh+RoiAPhdgJ//nBM/RJBKAUQIXEPrMLcMNEShOADItsf3tzZpCCE5NureVV72AkuvLEYGKCN11N0n4TFFFwPOsgKDnDTh6GzeACBTDULvucuYFzgdoR1/humXoIQIlELLr7sik3zsR7ecP4FpChQsngAgUQciuu+kQDxYxL3A+UFuGLBUiBIhAVgbfdedJ74tee5wVEMI4oISYkAARqMcFRNp1N1hIkKiQKfYzUz2ICGRjFngQ55AFIX0vu0xRyBTVvQi7vnyFCNTVWSG77iYZnjXIDWRwLX2eV4obWGgTgZprv3PvuhsiLzC0a9kQUujErsJKRaDWgyGWBey688Hbzrs6/knGNvZqKyXXlxMOFETIDb3XGZ835C05zdzGIe5FghAQDlRAiht6S3MtQxQyvUVIQlNCSPBLmwj8qrCTSjgrILVrmRbS1r5CJMEJqFsdqC0nkPKGXlxLz5BAyJ0EhAPCXMC4JhdQgGvp6wTWwocTwAkkm1CJb+gtwbWkOtsglJALS6suIQ486q3/7+0aOtcfbN8+DxX0jRWrXZ+6ALckeJfxeT/6iJZzLT8KbHu7Rdv3nIafps7j7G0SdzfHlMi9RFhDSBByVkBOF3AV4FquC237kDMRag0Jlrl+8Y7WP9xDnWeeb6KJyXRqrAk/4agptP2PAr6n1pBgoVUEvhfeMSG7BHMm12pzLduKlAYn8F2rCJQcDrSFHB++dVtW5lq2RctS4RIRqN8F2Mn/OePz+u5qTHl8eExCQpXqQoKAF44MEXCqXeJS4ayg48NTupYasugaLizNGsLsaG+AFwg5KyD3rrvaXEtSN1Dh9eUL7SJQWnLwqrLk2mVlriWEkKXCmtzAvXYRKMkJ1LbrzoqVb3lwk9m1hHBU28TCCfhZt5JEoLZdd1cFXnqSgpALS2txAssAJyfOCZTiBjgrQFZeoJbry7OLVSkiUMKSTm277s4Cvmdq6iXktKEari+/RwTKcAK17bprfc/VG/jSkyROQOiFpdmfMesuwmeD9EfGQbpb2a67Ax/RcpPnh6lzd91TjgPEL+e4ejMU6P6e42fPq9YJ5IyNLirbdSfhrIBQpO0qLKKysSQn0Jjh9+BzVkBdrPfcezoBmwz9Wujf84cDzTEf35fSGvbt1jXAauA31sw8lqX6fE/O5Jp9q/le2nlu5DB2k3ol4G9pcy8NFucEnAraCXZqAORz8tKSdI75WJoI2IKQb4wPUMA/L4Wh2hODm40fS8YHCGceUOmpQwQcV4wREE5RRUxFhQPODo2NnGw2wHNeXeFQHw44cbDhALfMAi5AcThASACSmSEC27mB1pAgBIECUEptQA1OwHLBmAFhFOlwi0sMPqXwzR8APtgKwYMtxjxO4Bk3jB0QQrHOtnQnIGULLOACDrb5hziBP4ViZVgpAFyAXieAGwBNLgAn8LobYKUAcAFancAThWSlAGrjj+PDcAL9OGNMQWVUMWarEQF3wGTLuIJawoASqwOrDgecVeLQEagBO/k/hpwZQDjwtnDYQ0cuGWNQehhQ0qEhopyAU8qRcwNjxhoUiHcyECfgLx5WYUkSQolUOTZ3amxplyTk4BEojWqSgVWHA8/CAioJoRS8KgMJB+KFBceMPSgkDKh2LO7U3PLuBCJWCyA3JzWtBogJB55ZKLtasMdYhAxcdmP5LOJYRgQCG84KwB35ARiYRTeOP8b8geQEwgXFFhGdMCaBPIBSEXBCMCc/AANyXONyoNhw4JmdsmFBwxiFhLx4ozDhQEEKbWM1xikkYpZKAHACcdWURCGkIEpBEE5gGIGxTsB21opxC5FYGKHFaTtSe4wVA4gsAAc1FwSpFAEnBHOEAHqyXgqUKgDiRcAJwQwhgB4CcCBlKVCtCCAE0FMAxK807WjpUYQAEADlIoAQAAKACCAE8BZ24u9qEoD1nJBYLLQN3d/ddF++GgqK4D8ByL4MSLHQsCLUGgqK4JG5EVwHgAi8LgRr+2fYa6AZuxfgWKsAqBcBJwQr5whmzAd12N2A6vNDanMCf4nHvnRfzpkb4il2BYDjxcrohMaQMJRMawouAyYxWEZ40Lo8QUtriMNeDnKgOf5HBDzyBG7f+AWtIYKls/9faArCgRB7Zg8ouTYcaV4r652ktbz9CQfKdAWbY6VxBXWx2QJ8jP3HCeAK9DHrPmc1Tn6cQD2u4MxQaVgim9LfE97+iEBqMbD3G+waCoxKsv72zf/Rre4AIjCIEKxctZl1Bgy8fKwF2QkzIALZQgS7nHiAGAwe99vJf4b17zmGSQzGxVUc2tLjhuGVbPJfSD33j7JhxACUTn5EQHan2uXEz91nwjz2xtr8Kxv3a7H8iIDszh05IbCCMGZ+v0rbfW6k3fmHCCgXgRdChU/d58iwW3GDtfm2xPdKuuVHBBCB5+7ACsGh+6rR7s/dW79FBxEBBOExiXgo3CEsn0x8jnVDBOCVwbD3RBSayt/29i1/ax6v9l7Su4gAItBPFD6Yxw1MpW5ishPevuG/M+kRAUQg/YCxojB2n30XQuwNONlXbrLbSb/E3iMCiEBZ+YWNGGxEYsO/5u0lSjuZfz3775Xrt5YWRgQAQBBsIAJABAAAEQAARAAAEAEAQAQAABEAAEQAABABAEAEAAARAABEAAAQAQBABAAAEQAARAAAEAEAQAQAABEAAEQAABABAEAEAAARAABEAAAQAQBABAAAEQAARAAAEAEAQAQAABEAAEQAABABAEAEAAARAABEAAAQAQAokP8LMAAapFk/2sB7UAAAAABJRU5ErkJggg=="
@@ -60,10 +60,37 @@ class MyAlgoConnectWallet implements Wallet {
         return this.accounts[this.defaultAccount];
     }
 
-    async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
-
+    async signTxn(txns: Transaction[], permissionCallback?: PermissionCallback): Promise<SignedTxn[]> {
 
         const defaultAcct = this.getDefaultAccount()
+
+        if(permissionCallback){
+             return await permissionCallback.request({
+                approved: async (): Promise<SignedTxn[]> =>{
+                    const unsigned = []
+                    const signedTxns = []
+                    for(const tidx in txns){
+                        if(!txns[tidx]) continue
+
+                        const txn  = txns[tidx]
+                        if(algosdk.encodeAddress(txn.from.publicKey) === defaultAcct){
+                            signedTxns.push(unsigned.length)
+                            unsigned.push(txn.toByte())
+                        }else {
+                            signedTxns.push({txID:"", blob: new Uint8Array()})
+                        }
+                    }
+
+                    const s = await this.walletConn.signTransaction(unsigned)
+                    for(let x=0; x<signed.length;x++){
+                        if(typeof signedTxns[x] === 'number') signedTxns[x] = s[signedTxns[x]]
+                    }
+
+                    return signedTxns
+                },
+                declined: async(): Promise<SignedTxn[]> =>{ return [] }
+            })
+        }
 
         const signed = []
         for(const tidx in txns){
@@ -80,11 +107,11 @@ class MyAlgoConnectWallet implements Wallet {
         return signed
     }
 
-    signBytes(b: Uint8Array): Promise<Uint8Array> {
+    signBytes(b: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
         throw new Error('Method not implemented.')
     }
 
-    async signTeal(teal: Uint8Array): Promise<Uint8Array> {
+    async signTeal(teal: Uint8Array, permissionCallback?:PermissionCallback): Promise<Uint8Array> {
         return await this.walletConn.signLogicSig(teal, this.getDefaultAccount())
     }
 }

@@ -1,9 +1,9 @@
 import AlgoSignerWallet from './wallets/algosigner';
 import MyAlgoConnectWallet from './wallets/myalgoconnect';
 import InsecureWallet from './wallets/insecure';
-import { Wallet, SignedTxn } from './wallets/wallet';
+import { PermissionCallback, Wallet, SignedTxn } from './wallets/wallet';
 import { Transaction } from 'algosdk';
-export { Wallet, SignedTxn } from './wallets/wallet';
+export { PermissionResult, PermissionCallback, Wallet, SignedTxn } from './wallets/wallet';
 export declare const allowedWallets: {
     'algo-signer': typeof AlgoSignerWallet;
     'my-algo-connect': typeof MyAlgoConnectWallet;
@@ -13,7 +13,8 @@ export declare class SessionWallet {
     wallet: Wallet;
     wname: string;
     network: string;
-    constructor(network: string, wname?: string);
+    permissionCallback: PermissionCallback;
+    constructor(network: string, permissionCallback?: PermissionCallback, wname?: string);
     connect(): Promise<boolean>;
     connected(): boolean;
     setAccountList(accts: string[]): void;

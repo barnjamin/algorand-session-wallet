@@ -1,5 +1,5 @@
 import { Transaction } from 'algosdk';
-import { SignedTxn, Wallet } from './wallet';
+import { PermissionCallback, SignedTxn, Wallet } from './wallet';
 import MyAlgo from '@randlabs/myalgo-connect';
 declare class MyAlgoConnectWallet implements Wallet {
     accounts: string[];
@@ -14,8 +14,8 @@ declare class MyAlgoConnectWallet implements Wallet {
     connect(): Promise<boolean>;
     isConnected(): boolean;
     getDefaultAccount(): string;
-    signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
-    signBytes(b: Uint8Array): Promise<Uint8Array>;
-    signTeal(teal: Uint8Array): Promise<Uint8Array>;
+    signTxn(txns: Transaction[], permissionCallback?: PermissionCallback): Promise<SignedTxn[]>;
+    signBytes(b: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
+    signTeal(teal: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;
 }
 export default MyAlgoConnectWallet;
