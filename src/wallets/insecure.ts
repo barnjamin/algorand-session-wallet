@@ -42,7 +42,7 @@ class InsecureWallet implements Wallet {
     }
 
     isConnected(): boolean {
-        return this.accounts && this.accounts.length>0;
+        return this.accounts && this.accounts.length>0 && Object.keys(this.pkToSk).length>0;
     }
 
     getDefaultAccount(): string {
@@ -58,7 +58,7 @@ class InsecureWallet implements Wallet {
 
             const addr = algosdk.encodeAddress(txns[txidx].from.publicKey)
             if(addr === defaultAddr){
-                signed.push(algosdk.signTransaction(txns[txidx], this.pkToSk[addr].sk)) 
+                signed.push({txID: txns[txidx].txID(), blob:txns[txidx].signTxn(this.pkToSk[addr].sk)}) 
             }else{
                 signed.push({txID:"", blob:new Uint8Array()})
             }

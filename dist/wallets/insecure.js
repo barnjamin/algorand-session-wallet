@@ -40,7 +40,7 @@ class InsecureWallet {
         return InsecureWallet.img(inverted);
     }
     isConnected() {
-        return this.accounts && this.accounts.length > 0;
+        return this.accounts && this.accounts.length > 0 && Object.keys(this.pkToSk).length > 0;
     }
     getDefaultAccount() {
         if (!this.isConnected())
@@ -56,7 +56,7 @@ class InsecureWallet {
                     continue;
                 const addr = algosdk_2.default.encodeAddress(txns[txidx].from.publicKey);
                 if (addr === defaultAddr) {
-                    signed.push(algosdk_2.default.signTransaction(txns[txidx], this.pkToSk[addr].sk));
+                    signed.push({ txID: txns[txidx].txID(), blob: txns[txidx].signTxn(this.pkToSk[addr].sk) });
                 }
                 else {
                     signed.push({ txID: "", blob: new Uint8Array() });
