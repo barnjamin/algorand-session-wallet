@@ -16,10 +16,12 @@ exports.SessionWallet = exports.allowedWallets = void 0;
 const algosigner_1 = __importDefault(require("./wallets/algosigner"));
 const myalgoconnect_1 = __importDefault(require("./wallets/myalgoconnect"));
 const insecure_1 = __importDefault(require("./wallets/insecure"));
+const walletconnect_1 = __importDefault(require("./wallets/walletconnect"));
 exports.allowedWallets = {
     'algo-signer': algosigner_1.default,
     'my-algo-connect': myalgoconnect_1.default,
     'insecure-wallet': insecure_1.default,
+    'wallet-connect': walletconnect_1.default,
 };
 const walletPreferenceKey = 'wallet-preference';
 const acctListKey = 'acct-list';
@@ -58,6 +60,12 @@ class SessionWallet {
                         return true;
                     }
                     break;
+                case 'wallet-connect':
+                    yield this.wallet.connect((acct_list) => {
+                        this.setAccountList(acct_list);
+                        this.wallet.defaultAccount = this.accountIndex();
+                    });
+                    return true;
                 default:
                     if (yield this.wallet.connect()) {
                         this.setAccountList(this.wallet.accounts);
@@ -93,6 +101,7 @@ class SessionWallet {
         return mn === null ? "" : mn;
     }
     disconnect() {
+        this.wallet.disconnect();
         sessionStorage.setItem(walletPreferenceKey, '');
         sessionStorage.setItem(acctPreferenceKey, '');
         sessionStorage.setItem(acctListKey, '');

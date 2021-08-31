@@ -1,13 +1,14 @@
 import { Transaction, TransactionParams } from 'algosdk';
 import { PermissionCallback, SignedTxn, Wallet } from './wallet';
-declare class InsecureWallet implements Wallet {
+import WalletConnect from "@walletconnect/client";
+declare class WC implements Wallet {
     accounts: string[];
     defaultAccount: number;
     network: string;
+    connector: WalletConnect;
     permissionCallback?: PermissionCallback;
-    pkToSk: object;
     constructor(network: string);
-    connect(mnemonic: string): Promise<boolean>;
+    connect(cb: any): Promise<boolean>;
     static displayName(): string;
     displayName(): string;
     static img(inverted: boolean): string;
@@ -20,4 +21,4 @@ declare class InsecureWallet implements Wallet {
     signBytes(b: Uint8Array): Promise<Uint8Array>;
     signTeal(teal: Uint8Array): Promise<Uint8Array>;
 }
-export default InsecureWallet;
+export default WC;

@@ -53,6 +53,7 @@ class MyAlgoConnectWallet {
     isConnected() {
         return this.accounts && this.accounts.length > 0;
     }
+    disconnect() { }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";

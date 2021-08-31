@@ -14,6 +14,7 @@ declare class MyAlgoConnectWallet implements Wallet {
     img(inverted: boolean): string;
     connect(): Promise<boolean>;
     isConnected(): boolean;
+    disconnect(): void;
     getDefaultAccount(): string;
     signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
     signBytes(b: Uint8Array, permissionCallback?: PermissionCallback): Promise<Uint8Array>;

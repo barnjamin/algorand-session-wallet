@@ -19,6 +19,7 @@ export interface Wallet {
     img(inverted: boolean): string;
     connect(settings?: any): Promise<boolean>;
     isConnected(): boolean;
+    disconnect(): any;
     getDefaultAccount(): string;
     signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
     signBytes(b: Uint8Array): Promise<Uint8Array>;

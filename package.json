@@ -8,7 +8,11 @@
     "dist/**/*"
   ],
   "dependencies": {
+    "@json-rpc-tools/utils": "^1.7.6",
     "@randlabs/myalgo-connect": "^1.1.0",
+    "@walletconnect/client": "^1.6.5",
+    "@walletconnect/qrcode-modal": "^1.6.5",
+    "algorand-walletconnect-qrcode-modal": "^1.6.1",
     "algosdk": "^1.11.1",
     "buffer": "^6.0.3"
   },

@@ -52,14 +52,18 @@ class MyAlgoConnectWallet implements Wallet {
         return true;
     }
 
+
     isConnected(): boolean {
         return this.accounts && this.accounts.length>0;
     }
+
+    disconnect(){ /* noop */}
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""
         return this.accounts[this.defaultAccount];
     }
+
 
     async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
 

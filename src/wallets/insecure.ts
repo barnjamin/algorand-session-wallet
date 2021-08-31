@@ -17,8 +17,9 @@ class InsecureWallet implements Wallet {
         this.accounts = []
         this.pkToSk  = {}
         this.defaultAccount = 0;
-	this.network = network
+	    this.network = network
     }
+
 
     async connect(mnemonic: string): Promise<boolean> {
         const sk = algosdk.mnemonicToSecretKey(mnemonic)
@@ -29,6 +30,7 @@ class InsecureWallet implements Wallet {
 
         return true
     }
+
 
     static displayName():string{ return "Insecure Wallet" }
     displayName(): string { return InsecureWallet.displayName() }
@@ -44,6 +46,8 @@ class InsecureWallet implements Wallet {
     isConnected(): boolean {
         return this.accounts && this.accounts.length>0 && Object.keys(this.pkToSk).length>0;
     }
+
+    disconnect(){}
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""

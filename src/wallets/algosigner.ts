@@ -62,8 +62,11 @@ class AlgoSignerWallet implements Wallet {
         return false
     }
 
+
     // Only checking accounts, not that algosigner is loaded because sometimes it takes a few tries
     isConnected(): boolean { return this.accounts && this.accounts.length>0 }
+
+    disconnect() { /* noop */ }
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""

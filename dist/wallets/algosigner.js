@@ -62,6 +62,7 @@ class AlgoSignerWallet {
     }
     // Only checking accounts, not that algosigner is loaded because sometimes it takes a few tries
     isConnected() { return this.accounts && this.accounts.length > 0; }
+    disconnect() { }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";

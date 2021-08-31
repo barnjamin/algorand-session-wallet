@@ -13,6 +13,7 @@ declare class AlgoSignerWallet implements Wallet {
     connect(): Promise<boolean>;
     waitForLoaded(): Promise<boolean>;
     isConnected(): boolean;
+    disconnect(): void;
     getDefaultAccount(): string;
     signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
     sign(txn: TransactionParams): Promise<SignedTxn>;

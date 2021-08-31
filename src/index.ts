@@ -1,6 +1,7 @@
 import AlgoSignerWallet from './wallets/algosigner'
 import MyAlgoConnectWallet from './wallets/myalgoconnect'
 import InsecureWallet from './wallets/insecure'
+import WC from './wallets/walletconnect'
 import {PermissionResult, PermissionCallback, Wallet, SignedTxn } from './wallets/wallet'
 import { Transaction } from 'algosdk'
 
@@ -10,6 +11,7 @@ export const allowedWallets = {
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
         'insecure-wallet': InsecureWallet,
+        'wallet-connect':WC,
 }
 
 const walletPreferenceKey = 'wallet-preference'
@@ -62,6 +64,14 @@ export class SessionWallet {
                                 }
 
                                 break
+                        case 'wallet-connect':
+                                await this.wallet.connect((acct_list)=>{
+                                        this.setAccountList(acct_list)
+                                        this.wallet.defaultAccount = this.accountIndex()
+                                }) 
+
+                                return true
+
 
                         default:
                                 if (await this.wallet.connect()) {
@@ -105,6 +115,7 @@ export class SessionWallet {
         }
 
         disconnect() {
+                this.wallet.disconnect()
                 sessionStorage.setItem(walletPreferenceKey, '')
                 sessionStorage.setItem(acctPreferenceKey, '')
                 sessionStorage.setItem(acctListKey, '')

@@ -32,6 +32,8 @@ export interface Wallet {
     connect(settings?: any): Promise<boolean>;
     isConnected(): boolean;
 
+    disconnect()
+
     getDefaultAccount(): string;
 
     signTxn(txns: Transaction[]): Promise<SignedTxn[]>;
