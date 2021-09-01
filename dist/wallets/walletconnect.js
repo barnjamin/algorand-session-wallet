@@ -80,11 +80,9 @@ class WC {
             const request = utils_1.formatJsonRpcRequest("algo_signTxn", requestParams);
             console.log(request);
             const result = yield this.connector.sendCustomRequest(request);
-            console.log(result);
-            //return result.map(element => {
-            //  return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
-            //});
-            return [];
+            return result.map((element, idx) => {
+                return element ? { txID: txns[idx].txID(), blob: new Uint8Array(Buffer.from(element, "base64")) } : { txID: txns[idx].txID(), blob: new Uint8Array() };
+            });
         });
     }
     sign(txn) {

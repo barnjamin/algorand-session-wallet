@@ -80,30 +80,19 @@ class WC implements Wallet {
   async signTxn(txns: Transaction[]): Promise<SignedTxn[]> {
     const defaultAddress = this.getDefaultAccount()
     const txnsToSign = txns.map((txn) => {
-      console.log(txn)
       const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
       if (algosdk.encodeAddress(txn.from.publicKey) !== defaultAddress) return { txn: encodedTxn, message: 'TODO', signers: [] };
       return { txn: encodedTxn, message: 'TODO' };
     })
 
-    console.log(txnsToSign)
-
     const requestParams = [txnsToSign];
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
 
-    console.log(request)
-
     const result: Array<string | null> = await this.connector.sendCustomRequest(request);
-    console.log(result)
-    const decoded = result.map(element => {
-      return element ? new Uint8Array(Buffer.from(element, "base64")) : null;
+
+    return result.map((element, idx) => {
+      return element ? {txID: txns[idx].txID(), blob: new Uint8Array(Buffer.from(element, "base64"))} : {txID:txns[idx].txID(), blob:new Uint8Array()};
     });
-
-    console.log(decoded)
-    console.log(algosdk.decodeSignedTransaction(decoded[0]))
-
-    return []
-
   }
 
   async sign(txn: TransactionParams): Promise<SignedTxn> {
