@@ -2,6 +2,8 @@
 
 *PRs welcome*
 
+example: https://github.com/barnjamin/algorand-session-wallet-example
+
 ```sh
 npm -i algorand-session-wallet
 ```
