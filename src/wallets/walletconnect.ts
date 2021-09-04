@@ -35,9 +35,7 @@ class WC implements Wallet {
 
     this.connector.on("connect", (error, payload) => {
       if (error) { throw error; }
-
       const { accounts } = payload.params[0];
-
       cb(accounts)
       this.accounts = accounts
     });
@@ -52,8 +50,6 @@ class WC implements Wallet {
     });
 
     this.connector.on("disconnect", (error, payload) => {  if (error) throw error; });
-
-
 
     return true
   }
@@ -81,12 +77,12 @@ class WC implements Wallet {
     const defaultAddress = this.getDefaultAccount()
     const txnsToSign = txns.map((txn) => {
       const encodedTxn = Buffer.from(algosdk.encodeUnsignedTransaction(txn)).toString("base64");
-      if (algosdk.encodeAddress(txn.from.publicKey) !== defaultAddress) return { txn: encodedTxn, signers: [] };
-      return { txn: encodedTxn };
+
+      if (algosdk.encodeAddress(txn.from.publicKey) !== defaultAddress) return {txn: encodedTxn, signers: []};
+      return {txn: encodedTxn };
     })
 
-    const requestParams = [txnsToSign];
-    const request = formatJsonRpcRequest("algo_signTxn", requestParams);
+    const request = formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
 
     const result: string[] = await this.connector.sendCustomRequest(request);
 

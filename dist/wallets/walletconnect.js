@@ -74,8 +74,7 @@ class WC {
                     return { txn: encodedTxn, signers: [] };
                 return { txn: encodedTxn };
             });
-            const requestParams = [txnsToSign];
-            const request = utils_1.formatJsonRpcRequest("algo_signTxn", requestParams);
+            const request = utils_1.formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
             const result = yield this.connector.sendCustomRequest(request);
             return result.map((element, idx) => {
                 return element ? {
