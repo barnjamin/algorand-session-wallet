@@ -42,7 +42,7 @@ class InsecureWallet {
     isConnected() {
         return this.accounts && this.accounts.length > 0 && Object.keys(this.pkToSk).length > 0;
     }
-    disconnect() { }
+    disconnect() { this.accounts = []; this.pkToSk = {}; }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";

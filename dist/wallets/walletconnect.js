@@ -47,7 +47,7 @@ class WC {
                 cb(accounts);
                 this.accounts = accounts;
             });
-            this.connector.on("disconnect", (error, payload) => { console.log("disco", error, payload); if (error)
+            this.connector.on("disconnect", (error, payload) => { if (error)
                 throw error; });
             return true;
         });
@@ -69,19 +69,22 @@ class WC {
         return __awaiter(this, void 0, void 0, function* () {
             const defaultAddress = this.getDefaultAccount();
             const txnsToSign = txns.map((txn) => {
-                console.log(txn);
                 const encodedTxn = Buffer.from(algosdk_1.default.encodeUnsignedTransaction(txn)).toString("base64");
                 if (algosdk_1.default.encodeAddress(txn.from.publicKey) !== defaultAddress)
-                    return { txn: encodedTxn, message: 'TODO', signers: [] };
-                return { txn: encodedTxn, message: 'TODO' };
+                    return { txn: encodedTxn, signers: [] };
+                return { txn: encodedTxn };
             });
-            console.log(txnsToSign);
             const requestParams = [txnsToSign];
             const request = utils_1.formatJsonRpcRequest("algo_signTxn", requestParams);
-            console.log(request);
             const result = yield this.connector.sendCustomRequest(request);
             return result.map((element, idx) => {
-                return element ? { txID: txns[idx].txID(), blob: new Uint8Array(Buffer.from(element, "base64")) } : { txID: txns[idx].txID(), blob: new Uint8Array() };
+                return element ? {
+                    txID: txns[idx].txID(),
+                    blob: new Uint8Array(Buffer.from(element, "base64"))
+                } : {
+                    txID: txns[idx].txID(),
+                    blob: new Uint8Array()
+                };
             });
         });
     }

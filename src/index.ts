@@ -65,8 +65,8 @@ export class SessionWallet {
 
                                 break
                         case 'wallet-connect':
-                                await this.wallet.connect((acct_list)=>{
-                                        this.setAccountList(acct_list)
+                                await this.wallet.connect((acctList)=>{
+                                        this.setAccountList(acctList)
                                         this.wallet.defaultAccount = this.accountIndex()
                                 }) 
 
@@ -115,7 +115,7 @@ export class SessionWallet {
         }
 
         disconnect() {
-                this.wallet.disconnect()
+                if(this.wallet !== undefined) this.wallet.disconnect()
                 sessionStorage.setItem(walletPreferenceKey, '')
                 sessionStorage.setItem(acctPreferenceKey, '')
                 sessionStorage.setItem(acctListKey, '')

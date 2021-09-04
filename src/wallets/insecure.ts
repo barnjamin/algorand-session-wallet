@@ -47,7 +47,7 @@ class InsecureWallet implements Wallet {
         return this.accounts && this.accounts.length>0 && Object.keys(this.pkToSk).length>0;
     }
 
-    disconnect(){}
+    disconnect(){ this.accounts = []; this.pkToSk = {}; }
 
     getDefaultAccount(): string {
         if(!this.isConnected()) return ""

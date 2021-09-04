@@ -51,7 +51,7 @@ class WC implements Wallet {
       this.accounts = accounts
     });
 
-    this.connector.on("disconnect", (error, payload) => { console.log("disco", error, payload); if (error) throw error; });
+    this.connector.on("disconnect", (error, payload) => {  if (error) throw error; });
 
 
 
@@ -88,7 +88,7 @@ class WC implements Wallet {
     const requestParams = [txnsToSign];
     const request = formatJsonRpcRequest("algo_signTxn", requestParams);
 
-    const result: Array<string | null> = await this.connector.sendCustomRequest(request);
+    const result: string[] = await this.connector.sendCustomRequest(request);
 
     return result.map((element, idx) => {
       return element ? {

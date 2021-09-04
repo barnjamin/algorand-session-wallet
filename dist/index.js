@@ -61,8 +61,8 @@ class SessionWallet {
                     }
                     break;
                 case 'wallet-connect':
-                    yield this.wallet.connect((acct_list) => {
-                        this.setAccountList(acct_list);
+                    yield this.wallet.connect((acctList) => {
+                        this.setAccountList(acctList);
                         this.wallet.defaultAccount = this.accountIndex();
                     });
                     return true;
@@ -101,7 +101,8 @@ class SessionWallet {
         return mn === null ? "" : mn;
     }
     disconnect() {
-        this.wallet.disconnect();
+        if (this.wallet !== undefined)
+            this.wallet.disconnect();
         sessionStorage.setItem(walletPreferenceKey, '');
         sessionStorage.setItem(acctPreferenceKey, '');
         sessionStorage.setItem(acctListKey, '');
