@@ -8,10 +8,10 @@ import { Transaction } from 'algosdk'
 export {PermissionResult, PermissionCallback, Wallet, SignedTxn} from './wallets/wallet'
 
 export const allowedWallets = {
+        'wallet-connect':WC,
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
-        'insecure-wallet': InsecureWallet,
-        'wallet-connect':WC,
+        // 'insecure-wallet': InsecureWallet,
 }
 
 const walletPreferenceKey = 'wallet-preference'
