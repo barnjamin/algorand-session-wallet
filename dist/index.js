@@ -15,12 +15,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.SessionWallet = exports.allowedWallets = void 0;
 const algosigner_1 = __importDefault(require("./wallets/algosigner"));
 const myalgoconnect_1 = __importDefault(require("./wallets/myalgoconnect"));
+const insecure_1 = __importDefault(require("./wallets/insecure"));
 const walletconnect_1 = __importDefault(require("./wallets/walletconnect"));
 exports.allowedWallets = {
     'wallet-connect': walletconnect_1.default,
     'algo-signer': algosigner_1.default,
     'my-algo-connect': myalgoconnect_1.default,
-    // 'insecure-wallet': InsecureWallet,
+    'insecure-wallet': insecure_1.default,
 };
 const walletPreferenceKey = 'wallet-preference';
 const acctListKey = 'acct-list';
@@ -79,6 +80,13 @@ class SessionWallet {
         });
     }
     connected() { return (this.wallet !== undefined && this.wallet.isConnected()); }
+    getSigner() {
+        return (txnGroup, indexesToSign) => {
+            return Promise.resolve(this.signTxn(txnGroup)).then((txns) => {
+                return txns.map((tx) => { return tx.blob; });
+            });
+        };
+    }
     setAccountList(accts) { sessionStorage.setItem(acctListKey, JSON.stringify(accts)); }
     accountList() {
         const accts = sessionStorage.getItem(acctListKey);

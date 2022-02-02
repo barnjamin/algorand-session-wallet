@@ -2,8 +2,8 @@ import AlgoSignerWallet from './wallets/algosigner'
 import MyAlgoConnectWallet from './wallets/myalgoconnect'
 import InsecureWallet from './wallets/insecure'
 import WC from './wallets/walletconnect'
-import {PermissionResult, PermissionCallback, Wallet, SignedTxn } from './wallets/wallet'
-import { Transaction } from 'algosdk'
+import {PermissionCallback, Wallet, SignedTxn } from './wallets/wallet'
+import { Transaction, TransactionSigner } from 'algosdk'
 
 export {PermissionResult, PermissionCallback, Wallet, SignedTxn} from './wallets/wallet'
 
@@ -11,7 +11,7 @@ export const allowedWallets = {
         'wallet-connect':WC,
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
-        // 'insecure-wallet': InsecureWallet,
+        'insecure-wallet': InsecureWallet,
 }
 
 const walletPreferenceKey = 'wallet-preference'
@@ -89,6 +89,14 @@ export class SessionWallet {
         }
 
         connected(): boolean { return (this.wallet !== undefined && this.wallet.isConnected()) }
+
+        getSigner(): TransactionSigner {
+          return (txnGroup: Transaction[], indexesToSign: number[]) => {
+            return Promise.resolve(this.signTxn(txnGroup)).then((txns)=>{
+                return txns.map((tx)=>{return tx.blob})
+            });
+          };
+        }
 
         setAccountList(accts: string[]) { sessionStorage.setItem(acctListKey, JSON.stringify(accts)) }
         accountList(): string[] {
