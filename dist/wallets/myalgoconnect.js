@@ -28,8 +28,12 @@ class MyAlgoConnectWallet {
         this.defaultAccount = 0;
         this.walletConn = new myalgo_connect_1.default();
     }
-    static displayName() { return "My Algo"; }
-    displayName() { return MyAlgoConnectWallet.displayName(); }
+    static displayName() {
+        return "My Algo";
+    }
+    displayName() {
+        return MyAlgoConnectWallet.displayName();
+    }
     static img(inverted) {
         return inverted ? logoInverted : logo;
     }
@@ -53,11 +57,37 @@ class MyAlgoConnectWallet {
     isConnected() {
         return this.accounts && this.accounts.length > 0;
     }
-    disconnect() { }
+    disconnect() {
+        /* noop */
+    }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";
         return this.accounts[this.defaultAccount];
+    }
+    doSign(defaultAcct, txns) {
+        return __awaiter(this, void 0, void 0, function* () {
+            const unsigned = [];
+            const signedTxns = [];
+            for (const tidx in txns) {
+                if (!txns[tidx])
+                    continue;
+                const txn = txns[tidx];
+                if (algosdk_1.default.encodeAddress(txn.from.publicKey) === defaultAcct) {
+                    signedTxns.push(unsigned.length);
+                    unsigned.push(txn.toByte());
+                }
+                else {
+                    signedTxns.push({ txID: "", blob: new Uint8Array() });
+                }
+            }
+            const s = yield this.walletConn.signTransaction(unsigned);
+            for (let x = 0; x < signedTxns.length; x++) {
+                if (typeof signedTxns[x] === "number")
+                    signedTxns[x] = s[signedTxns[x]];
+            }
+            return signedTxns;
+        });
     }
     signTxn(txns) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -65,47 +95,18 @@ class MyAlgoConnectWallet {
             if (this.permissionCallback) {
                 return yield this.permissionCallback.request({
                     approved: () => __awaiter(this, void 0, void 0, function* () {
-                        const unsigned = [];
-                        const signedTxns = [];
-                        for (const tidx in txns) {
-                            if (!txns[tidx])
-                                continue;
-                            const txn = txns[tidx];
-                            if (algosdk_1.default.encodeAddress(txn.from.publicKey) === defaultAcct) {
-                                signedTxns.push(unsigned.length);
-                                unsigned.push(txn.toByte());
-                            }
-                            else {
-                                signedTxns.push({ txID: "", blob: new Uint8Array() });
-                            }
-                        }
-                        const s = yield this.walletConn.signTransaction(unsigned);
-                        for (let x = 0; x < signedTxns.length; x++) {
-                            if (typeof signedTxns[x] === 'number')
-                                signedTxns[x] = s[signedTxns[x]];
-                        }
-                        return signedTxns;
+                        return yield this.doSign(defaultAcct, txns);
                     }),
-                    declined: () => __awaiter(this, void 0, void 0, function* () { return []; })
+                    declined: () => __awaiter(this, void 0, void 0, function* () {
+                        return [];
+                    }),
                 });
             }
-            const signed = [];
-            for (const tidx in txns) {
-                if (!txns[tidx])
-                    continue;
-                const txn = txns[tidx];
-                if (algosdk_1.default.encodeAddress(txn.from.publicKey) === defaultAcct) {
-                    signed.push(yield this.walletConn.signTransaction(txn.toByte()));
-                }
-                else {
-                    signed.push({ txID: "", blob: new Uint8Array() });
-                }
-            }
-            return signed;
+            return yield this.doSign(defaultAcct, txns);
         });
     }
     signBytes(b, permissionCallback) {
-        throw new Error('Method not implemented.');
+        throw new Error("Method not implemented.");
     }
     signTeal(teal, permissionCallback) {
         return __awaiter(this, void 0, void 0, function* () {
