@@ -1,4 +1,3 @@
-"use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -8,99 +7,155 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __generator = (this && this.__generator) || function (thisArg, body) {
+    var _ = { label: 0, sent: function() { if (t[0] & 1) throw t[1]; return t[1]; }, trys: [], ops: [] }, f, y, t, g;
+    return g = { next: verb(0), "throw": verb(1), "return": verb(2) }, typeof Symbol === "function" && (g[Symbol.iterator] = function() { return this; }), g;
+    function verb(n) { return function (v) { return step([n, v]); }; }
+    function step(op) {
+        if (f) throw new TypeError("Generator is already executing.");
+        while (_) try {
+            if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+            if (y = 0, t) op = [op[0] & 2, t.value];
+            switch (op[0]) {
+                case 0: case 1: t = op; break;
+                case 4: _.label++; return { value: op[1], done: false };
+                case 5: _.label++; y = op[1]; op = [0]; continue;
+                case 7: op = _.ops.pop(); _.trys.pop(); continue;
+                default:
+                    if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) { _ = 0; continue; }
+                    if (op[0] === 3 && (!t || (op[1] > t[0] && op[1] < t[3]))) { _.label = op[1]; break; }
+                    if (op[0] === 6 && _.label < t[1]) { _.label = t[1]; t = op; break; }
+                    if (t && _.label < t[2]) { _.label = t[2]; _.ops.push(op); break; }
+                    if (t[2]) _.ops.pop();
+                    _.trys.pop(); continue;
+            }
+            op = body.call(thisArg, _);
+        } catch (e) { op = [6, e]; y = 0; } finally { f = t = 0; }
+        if (op[0] & 5) throw op[1]; return { value: op[0] ? op[1] : void 0, done: true };
+    }
+};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
-Object.defineProperty(exports, "__esModule", { value: true });
-const algosdk_1 = __importDefault(require("algosdk"));
-const client_1 = __importDefault(require("@walletconnect/client"));
-const algorand_walletconnect_qrcode_modal_1 = __importDefault(require("algorand-walletconnect-qrcode-modal"));
-const utils_1 = require("@json-rpc-tools/utils");
-const logo = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIwSDE3LjUwNDdMMTUuODY5MyAxMy45NkwxMi4zNjI1IDIwSDkuNTYzNzVMMTQuOTc1OCAxMC42NDU2TDE0LjA5OTEgNy4zODE3TDYuNzk4NzQgMjBINEwxMy4yNTYxIDRIMTUuNzE3NkwxNi43Nzk4IDcuOTg3MzhIMTkuMzA4N0wxNy41ODkgMTAuOTgyMUwyMCAyMFoiIGZpbGw9IiMyQjJCMkYiLz4KPC9zdmc+Cg==";
-class WC {
-    constructor(network) {
-        this.accounts = [];
-        this.defaultAccount = 0;
-        this.network = network;
-        const bridge = "https://bridge.walletconnect.org";
-        this.connector = new client_1.default({ bridge, qrcodeModal: algorand_walletconnect_qrcode_modal_1.default });
+(function (factory) {
+    if (typeof module === "object" && typeof module.exports === "object") {
+        var v = factory(require, exports);
+        if (v !== undefined) module.exports = v;
     }
-    connect(cb) {
-        return __awaiter(this, void 0, void 0, function* () {
-            // Check if connection is already established
-            if (this.connector.connected)
-                return true;
-            this.connector.createSession();
-            this.connector.on("connect", (error, payload) => {
-                if (error) {
-                    throw error;
-                }
-                const { accounts } = payload.params[0];
-                cb(accounts);
-                this.accounts = accounts;
+    else if (typeof define === "function" && define.amd) {
+        define(["require", "exports", "algosdk", "@walletconnect/client", "algorand-walletconnect-qrcode-modal", "@json-rpc-tools/utils"], factory);
+    }
+})(function (require, exports) {
+    "use strict";
+    Object.defineProperty(exports, "__esModule", { value: true });
+    var algosdk_1 = __importDefault(require("algosdk"));
+    var client_1 = __importDefault(require("@walletconnect/client"));
+    var algorand_walletconnect_qrcode_modal_1 = __importDefault(require("algorand-walletconnect-qrcode-modal"));
+    var utils_1 = require("@json-rpc-tools/utils");
+    var logo = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTIwIDIwSDE3LjUwNDdMMTUuODY5MyAxMy45NkwxMi4zNjI1IDIwSDkuNTYzNzVMMTQuOTc1OCAxMC42NDU2TDE0LjA5OTEgNy4zODE3TDYuNzk4NzQgMjBINEwxMy4yNTYxIDRIMTUuNzE3NkwxNi43Nzk4IDcuOTg3MzhIMTkuMzA4N0wxNy41ODkgMTAuOTgyMUwyMCAyMFoiIGZpbGw9IiMyQjJCMkYiLz4KPC9zdmc+Cg==";
+    var WC = /** @class */ (function () {
+        function WC(network) {
+            this.accounts = [];
+            this.defaultAccount = 0;
+            this.network = network;
+            var bridge = "https://bridge.walletconnect.org";
+            this.connector = new client_1.default({ bridge: bridge, qrcodeModal: algorand_walletconnect_qrcode_modal_1.default });
+        }
+        WC.prototype.connect = function (cb) {
+            return __awaiter(this, void 0, void 0, function () {
+                var _this = this;
+                return __generator(this, function (_a) {
+                    // Check if connection is already established
+                    if (this.connector.connected)
+                        return [2 /*return*/, true];
+                    this.connector.createSession();
+                    this.connector.on("connect", function (error, payload) {
+                        if (error) {
+                            throw error;
+                        }
+                        var accounts = payload.params[0].accounts;
+                        cb(accounts);
+                        _this.accounts = accounts;
+                    });
+                    this.connector.on("session_update", function (error, payload) {
+                        if (error) {
+                            throw error;
+                        }
+                        var accounts = payload.params[0].accounts;
+                        cb(accounts);
+                        _this.accounts = accounts;
+                    });
+                    this.connector.on("disconnect", function (error, payload) { if (error)
+                        throw error; });
+                    return [2 /*return*/, true];
+                });
             });
-            this.connector.on("session_update", (error, payload) => {
-                if (error) {
-                    throw error;
-                }
-                const { accounts } = payload.params[0];
-                cb(accounts);
-                this.accounts = accounts;
+        };
+        WC.displayName = function () { return "Algorand Wallet"; };
+        WC.prototype.displayName = function () { return WC.displayName(); };
+        WC.img = function (inverted) { return logo; };
+        WC.prototype.img = function (inverted) {
+            return WC.img(inverted);
+        };
+        WC.prototype.isConnected = function () { return this.connector.connected; };
+        WC.prototype.disconnect = function () { this.connector.killSession(); };
+        WC.prototype.getDefaultAccount = function () {
+            if (!this.isConnected())
+                return "";
+            return this.accounts[this.defaultAccount];
+        };
+        WC.prototype.signTxn = function (txns) {
+            return __awaiter(this, void 0, void 0, function () {
+                var defaultAddress, txnsToSign, request, result;
+                return __generator(this, function (_a) {
+                    switch (_a.label) {
+                        case 0:
+                            defaultAddress = this.getDefaultAccount();
+                            txnsToSign = txns.map(function (txn) {
+                                var encodedTxn = Buffer.from(algosdk_1.default.encodeUnsignedTransaction(txn)).toString("base64");
+                                if (algosdk_1.default.encodeAddress(txn.from.publicKey) !== defaultAddress)
+                                    return { txn: encodedTxn, signers: [] };
+                                return { txn: encodedTxn };
+                            });
+                            request = utils_1.formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
+                            return [4 /*yield*/, this.connector.sendCustomRequest(request)];
+                        case 1:
+                            result = _a.sent();
+                            return [2 /*return*/, result.map(function (element, idx) {
+                                    return element ? {
+                                        txID: txns[idx].txID(),
+                                        blob: new Uint8Array(Buffer.from(element, "base64"))
+                                    } : {
+                                        txID: txns[idx].txID(),
+                                        blob: new Uint8Array()
+                                    };
+                                })];
+                    }
+                });
             });
-            this.connector.on("disconnect", (error, payload) => { if (error)
-                throw error; });
-            return true;
-        });
-    }
-    static displayName() { return "Algorand Wallet"; }
-    displayName() { return WC.displayName(); }
-    static img(inverted) { return logo; }
-    img(inverted) {
-        return WC.img(inverted);
-    }
-    isConnected() { return this.connector.connected; }
-    disconnect() { this.connector.killSession(); }
-    getDefaultAccount() {
-        if (!this.isConnected())
-            return "";
-        return this.accounts[this.defaultAccount];
-    }
-    signTxn(txns) {
-        return __awaiter(this, void 0, void 0, function* () {
-            const defaultAddress = this.getDefaultAccount();
-            const txnsToSign = txns.map((txn) => {
-                const encodedTxn = Buffer.from(algosdk_1.default.encodeUnsignedTransaction(txn)).toString("base64");
-                if (algosdk_1.default.encodeAddress(txn.from.publicKey) !== defaultAddress)
-                    return { txn: encodedTxn, signers: [] };
-                return { txn: encodedTxn };
+        };
+        WC.prototype.sign = function (txn) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    throw new Error('Method not implemented.');
+                });
             });
-            const request = utils_1.formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
-            const result = yield this.connector.sendCustomRequest(request);
-            return result.map((element, idx) => {
-                return element ? {
-                    txID: txns[idx].txID(),
-                    blob: new Uint8Array(Buffer.from(element, "base64"))
-                } : {
-                    txID: txns[idx].txID(),
-                    blob: new Uint8Array()
-                };
+        };
+        WC.prototype.signBytes = function (b) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    throw new Error('Method not implemented.');
+                });
             });
-        });
-    }
-    sign(txn) {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
-        });
-    }
-    signBytes(b) {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
-        });
-    }
-    signTeal(teal) {
-        return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
-        });
-    }
-}
-exports.default = WC;
+        };
+        WC.prototype.signTeal = function (teal) {
+            return __awaiter(this, void 0, void 0, function () {
+                return __generator(this, function (_a) {
+                    throw new Error('Method not implemented.');
+                });
+            });
+        };
+        return WC;
+    }());
+    exports.default = WC;
+});

@@ -24,7 +24,7 @@
     "typescript": "^4.3.5"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc -p .",
     "test": "",
     "lint": "tslint -p tsconfig.json",
     "prepare": "npm run build",
