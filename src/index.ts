@@ -4,6 +4,7 @@ import InsecureWallet from './wallets/insecure'
 import WC from './wallets/walletconnect'
 import {PermissionCallback, Wallet, SignedTxn } from './wallets/wallet'
 import { Transaction, TransactionSigner } from 'algosdk'
+import MagicLink from './wallets/magiclink'
 
 export {PermissionResult, PermissionCallback, Wallet, SignedTxn} from './wallets/wallet'
 
@@ -12,6 +13,7 @@ export const allowedWallets = {
         'algo-signer': AlgoSignerWallet,
         'my-algo-connect': MyAlgoConnectWallet,
         'insecure-wallet': InsecureWallet,
+        'magic-link':MagicLink,
 }
 
 const walletPreferenceKey = 'wallet-preference'
@@ -19,15 +21,14 @@ const acctListKey = 'acct-list'
 const acctPreferenceKey = 'acct-preference'
 const mnemonicKey = 'mnemonic'
 
-
-
 export class SessionWallet {
         wallet: Wallet
         wname: string
         network: string
+        apiKey: string
         permissionCallback?: PermissionCallback
 
-        constructor(network: string, permissionCallback?: PermissionCallback, wname?: string) {
+        constructor(network: string, permissionCallback?: PermissionCallback, wname?: string, apiKey?:string) {
                 if (wname) this.setWalletPreference(wname)
 
                 this.network = network
@@ -38,6 +39,7 @@ export class SessionWallet {
 
                 if (!(this.wname in allowedWallets)) return
 
+                this.apiKey = apiKey
                 this.wallet = new allowedWallets[this.wname](network)
 		this.wallet.permissionCallback = this.permissionCallback
                 this.wallet.accounts = this.accountList()
@@ -64,6 +66,19 @@ export class SessionWallet {
                                 }
 
                                 break
+                        case 'magic-link':
+                                let email = prompt("Type the email youd like to login with")
+
+                                if (!email) return false
+
+                                if (await this.wallet.connect({email: email, apiKey: this.apiKey, rpcURL: ""})) {
+                                        this.setAccountList(this.wallet.accounts)
+                                        this.wallet.defaultAccount = this.accountIndex()
+                                        return true
+                                }
+
+
+                                break
                         case 'wallet-connect':
                                 await this.wallet.connect((acctList)=>{
                                         this.setAccountList(acctList)
@@ -71,8 +86,6 @@ export class SessionWallet {
                                 }) 
 
                                 return true
-
-
                         default:
                                 if (await this.wallet.connect()) {
                                         this.setAccountList(this.wallet.accounts)

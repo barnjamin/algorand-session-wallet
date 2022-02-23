@@ -17,18 +17,20 @@ const algosigner_1 = __importDefault(require("./wallets/algosigner"));
 const myalgoconnect_1 = __importDefault(require("./wallets/myalgoconnect"));
 const insecure_1 = __importDefault(require("./wallets/insecure"));
 const walletconnect_1 = __importDefault(require("./wallets/walletconnect"));
+const magiclink_1 = __importDefault(require("./wallets/magiclink"));
 exports.allowedWallets = {
     'wallet-connect': walletconnect_1.default,
     'algo-signer': algosigner_1.default,
     'my-algo-connect': myalgoconnect_1.default,
     'insecure-wallet': insecure_1.default,
+    'magic-link': magiclink_1.default,
 };
 const walletPreferenceKey = 'wallet-preference';
 const acctListKey = 'acct-list';
 const acctPreferenceKey = 'acct-preference';
 const mnemonicKey = 'mnemonic';
 class SessionWallet {
-    constructor(network, permissionCallback, wname) {
+    constructor(network, permissionCallback, wname, apiKey) {
         if (wname)
             this.setWalletPreference(wname);
         this.network = network;
@@ -37,6 +39,7 @@ class SessionWallet {
             this.permissionCallback = permissionCallback;
         if (!(this.wname in exports.allowedWallets))
             return;
+        this.apiKey = apiKey;
         this.wallet = new exports.allowedWallets[this.wname](network);
         this.wallet.permissionCallback = this.permissionCallback;
         this.wallet.accounts = this.accountList();
@@ -55,6 +58,16 @@ class SessionWallet {
                         return false;
                     if (yield this.wallet.connect(mnemonic)) {
                         this.setMnemonic(mnemonic);
+                        this.setAccountList(this.wallet.accounts);
+                        this.wallet.defaultAccount = this.accountIndex();
+                        return true;
+                    }
+                    break;
+                case 'magic-link':
+                    let email = prompt("Type the email youd like to login with");
+                    if (!email)
+                        return false;
+                    if (yield this.wallet.connect({ email: email, apiKey: this.apiKey, rpcURL: "" })) {
                         this.setAccountList(this.wallet.accounts);
                         this.wallet.defaultAccount = this.accountIndex();
                         return true;
