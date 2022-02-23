@@ -9,12 +9,14 @@
   ],
   "dependencies": {
     "@json-rpc-tools/utils": "^1.7.6",
+    "@magic-ext/algorand": "^3.0.1",
     "@randlabs/myalgo-connect": "^1.1.0",
     "@walletconnect/client": "^1.6.5",
     "@walletconnect/qrcode-modal": "^1.6.5",
     "algorand-walletconnect-qrcode-modal": "^1.6.1",
     "algosdk": "^1.13.1",
-    "buffer": "^6.0.3"
+    "buffer": "^6.0.3",
+    "magic-sdk": "^8.0.1"
   },
   "devDependencies": {
     "@types/node": "^16.4.13",
