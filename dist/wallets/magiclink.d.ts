@@ -1,10 +1,11 @@
 import { Transaction, TransactionParams } from 'algosdk';
 import { PermissionCallback, SignedTxn, Wallet } from './wallet';
-import { AlgorandExtension } from '@magic-ext/algorand';
 import { InstanceWithExtensions, SDKBase } from '@magic-sdk/provider';
+import { AlgorandExtension } from '@magic-ext/algorand';
 interface MagicLinkSettings {
     apiKey: string;
     email: string;
+    rpcURL: string;
 }
 declare class MagicLink implements Wallet {
     accounts: string[];

@@ -25,7 +25,7 @@ class MagicLink {
     connect(settings) {
         return __awaiter(this, void 0, void 0, function* () {
             this.connector = new magic_sdk_1.Magic(settings.apiKey, {
-                extensions: { algorand: new algorand_1.AlgorandExtension({ rpcUrl: '' }), }
+                extensions: { algorand: new algorand_1.AlgorandExtension({ rpcUrl: settings.rpcURL }), }
             });
             yield this.connector.auth.loginWithMagicLink({ email: settings.email });
             const md = yield this.connector.user.getMetadata();
@@ -48,11 +48,12 @@ class MagicLink {
         return __awaiter(this, void 0, void 0, function* () {
             const defaultAddress = this.getDefaultAccount();
             const txnsToSign = txns.map((txn) => {
-                const encodedTxn = Buffer.from(algosdk_1.default.encodeUnsignedTransaction(txn)).toString("base64");
+                const encodedTxn = Buffer.from(txn.toByte()).toString("base64");
                 if (algosdk_1.default.encodeAddress(txn.from.publicKey) !== defaultAddress)
                     return { txn: encodedTxn, signers: [] };
                 return { txn: encodedTxn };
             });
+            console.log(txnsToSign);
             const result = yield this.connector.algorand.signGroupTransaction(txnsToSign);
             return result.map((element, idx) => {
                 return element ? {
