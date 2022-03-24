@@ -54,7 +54,7 @@ class MagicLink {
                 return { txn: encodedTxn };
             });
             console.log(txnsToSign);
-            const result = yield this.connector.algorand.signGroupTransaction(txnsToSign);
+            const result = yield this.connector.algorand.signGroupTransactionV2(txnsToSign);
             return result.map((element, idx) => {
                 return element ? {
                     txID: txns[idx].txID(),
