@@ -59,6 +59,7 @@ class WC {
                     if (this.connector.connected) {
                         clearInterval(reconn);
                         resolve(true);
+                        return;
                     }
                     this.connector.connect();
                 }, 100);
