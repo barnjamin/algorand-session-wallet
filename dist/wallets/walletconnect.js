@@ -23,7 +23,10 @@ class WC {
         this.defaultAccount = 0;
         this.network = network;
         const bridge = "https://bridge.walletconnect.org";
-        this.connector = new client_1.default({ bridge, qrcodeModal: algorand_walletconnect_qrcode_modal_1.default });
+        this.connector = new client_1.default({
+            bridge,
+            qrcodeModal: algorand_walletconnect_qrcode_modal_1.default,
+        });
     }
     connect(cb) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -47,19 +50,39 @@ class WC {
                 cb(accounts);
                 this.accounts = accounts;
             });
-            this.connector.on("disconnect", (error, payload) => { if (error)
-                throw error; });
-            return true;
+            this.connector.on("disconnect", (error, payload) => {
+                if (error)
+                    throw error;
+            });
+            return new Promise(resolve => {
+                const reconn = setInterval(() => {
+                    if (this.connector.connected) {
+                        clearInterval(reconn);
+                        resolve(true);
+                    }
+                    this.connector.connect();
+                }, 100);
+            });
         });
     }
-    static displayName() { return "Algorand Wallet"; }
-    displayName() { return WC.displayName(); }
-    static img(inverted) { return logo; }
+    static displayName() {
+        return "Wallet Connect";
+    }
+    displayName() {
+        return WC.displayName();
+    }
+    static img(inverted) {
+        return logo;
+    }
     img(inverted) {
         return WC.img(inverted);
     }
-    isConnected() { return this.connector.connected; }
-    disconnect() { this.connector.killSession(); }
+    isConnected() {
+        return this.connector.connected;
+    }
+    disconnect() {
+        this.connector.killSession();
+    }
     getDefaultAccount() {
         if (!this.isConnected())
             return "";
@@ -77,29 +100,31 @@ class WC {
             const request = utils_1.formatJsonRpcRequest("algo_signTxn", [txnsToSign]);
             const result = yield this.connector.sendCustomRequest(request);
             return result.map((element, idx) => {
-                return element ? {
-                    txID: txns[idx].txID(),
-                    blob: new Uint8Array(Buffer.from(element, "base64"))
-                } : {
-                    txID: txns[idx].txID(),
-                    blob: new Uint8Array()
-                };
+                return element
+                    ? {
+                        txID: txns[idx].txID(),
+                        blob: new Uint8Array(Buffer.from(element, "base64")),
+                    }
+                    : {
+                        txID: txns[idx].txID(),
+                        blob: new Uint8Array(),
+                    };
             });
         });
     }
     sign(txn) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
+            throw new Error("Method not implemented.");
         });
     }
     signBytes(b) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
+            throw new Error("Method not implemented.");
         });
     }
     signTeal(teal) {
         return __awaiter(this, void 0, void 0, function* () {
-            throw new Error('Method not implemented.');
+            throw new Error("Method not implemented.");
         });
     }
 }

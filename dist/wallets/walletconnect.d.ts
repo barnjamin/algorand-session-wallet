@@ -1,5 +1,5 @@
-import { Transaction, TransactionParams } from 'algosdk';
-import { PermissionCallback, SignedTxn, Wallet } from './wallet';
+import { Transaction, TransactionParams } from "algosdk";
+import { PermissionCallback, SignedTxn, Wallet } from "./wallet";
 import WalletConnect from "@walletconnect/client";
 declare class WC implements Wallet {
     accounts: string[];

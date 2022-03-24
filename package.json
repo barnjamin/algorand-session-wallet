@@ -1,6 +1,6 @@
 {
   "name": "algorand-session-wallet",
-  "version": "1.6.1",
+  "version": "1.7.0",
   "description": "Session wallet to allow persisted wallet connection across multiple wallets",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -13,7 +13,7 @@
     "@walletconnect/client": "^1.6.5",
     "@walletconnect/qrcode-modal": "^1.6.5",
     "algorand-walletconnect-qrcode-modal": "^1.6.1",
-    "algosdk": "^1.13.1",
+    "algosdk": "^1.15.0",
     "buffer": "^6.0.3"
   },
   "devDependencies": {
