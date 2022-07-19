@@ -106,7 +106,7 @@ export class SessionWallet {
       return Promise.resolve(this.signTxn(txnGroup)).then((txns) => {
         return txns.map((tx) => {
           return tx.blob;
-        });
+        }).filter((_, index) => indexesToSign.includes(index));
       });
     };
   }
